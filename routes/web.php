@@ -12,5 +12,21 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
+});
+
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::get('/item', function () {
+    return view('item');
+});
+
+Route::get('/report', function () {
+    return view('report');
+});
+
+Route::get('/employee', function () {
+    return view('employee');
 });
