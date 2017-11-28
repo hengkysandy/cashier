@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 06:06 PM
+-- Generation Time: Nov 28, 2017 at 06:14 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 7.0.13
 
@@ -94,6 +94,7 @@ CREATE TABLE `room` (
 CREATE TABLE `transaction` (
   `id` int(11) NOT NULL,
   `room_id` int(11) DEFAULT NULL,
+  `room_price` float DEFAULT NULL,
   `employee_id` int(11) DEFAULT NULL,
   `customer_name` varchar(255) DEFAULT NULL,
   `customer_phone` varchar(255) DEFAULT NULL,
@@ -113,6 +114,7 @@ CREATE TABLE `transaction` (
 CREATE TABLE `transaction_detail` (
   `id` int(11) NOT NULL,
   `item_id` int(11) DEFAULT NULL,
+  `item_price` float DEFAULT NULL,
   `other_item_name` varchar(255) DEFAULT NULL,
   `other_item_price` float DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
