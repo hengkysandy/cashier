@@ -34,19 +34,12 @@
     <link href="{{ asset('css/build/css/custom.min.css') }}" rel="stylesheet">
 
     @yield('style')
-    @yield('script')
 </head>
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
 
-            @include('layout.sidebar')
-
-            @include('layout.navigation')
-
-            <div class="right_col" role="main">
-                @yield('content')
-            </div>
+            @yield('content')
 
             <footer>
                 <div class="pull-right">
@@ -110,5 +103,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('css/build/js/custom.min.js') }}"></script>
+
+    @yield('script')
 </body>
 </html>

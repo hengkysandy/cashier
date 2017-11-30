@@ -15,9 +15,7 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/home', function () {
-    return view('home');
-});
+Route::get('/home', 'HomeController@view');
 
 Route::get('/item', function () {
     return view('item');

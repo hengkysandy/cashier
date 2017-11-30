@@ -3,87 +3,136 @@
 @section('title','Item - Cashier')
 
 @section('content')
-    <div class="page-title">
-        <div class="title_left">
-            <h3>Item</h3>
-        </div>
+    @include('layout.sidebar')
 
-        <div class="title_right">
-            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search Item...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-                    </span>
+    @include('layout.navigation')
+
+    <div class="right_col" role="main">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Item</h3>
+            </div>
+
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Item...">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Show Item</h2>
-                    <div class="clearfix"></div>
-                </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Show Item</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <form class="form-new-item">
+                                    <input type="submit" value="New Item" class="btn btn-success">
+                                </form>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
 
-                <div class="x_content">
-                    <div class="table-responsive">
-                        <table class="table table-striped jambo_table bulk_action">
-                            <thead>
-                            <tr class="headings">
-                                <th>
-                                    <input type="checkbox" id="check-all" class="flat">
-                                </th>
-                                <th class="column-title">Invoice </th>
-                                <th class="column-title">Invoice Date </th>
-                                <th class="column-title">Order </th>
-                                <th class="column-title">Bill to Name </th>
-                                <th class="column-title">Status </th>
-                                <th class="column-title">Amount </th>
-                                <th class="column-title no-link last"><span class="nobr">Action</span>
-                                </th>
-                                <th class="bulk-actions" colspan="7">
-                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr class="even pointer">
-                                <td class="a-center ">
-                                    <input type="checkbox" class="flat" name="table_records">
-                                </td>
-                                <td class=" ">121000040</td>
-                                <td class=" ">May 23, 2014 11:47:56 PM </td>
-                                <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                                <td class=" ">John Blank L</td>
-                                <td class=" ">Paid</td>
-                                <td class="a-right a-right ">$7.45</td>
-                                <td class=" last"><a href="#">View</a>
-                                </td>
-                            </tr>
-                            <tr class="odd pointer">
-                                <td class="a-center ">
-                                    <input type="checkbox" class="flat" name="table_records">
-                                </td>
-                                <td class=" ">121000039</td>
-                                <td class=" ">May 23, 2014 11:30:12 PM</td>
-                                <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
-                                </td>
-                                <td class=" ">John Blank L</td>
-                                <td class=" ">Paid</td>
-                                <td class="a-right a-right ">$741.20</td>
-                                <td class=" last"><a href="#">View</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                <tr class="headings">
+                                    <th class="column-title">Item Name </th>
+                                    <th class="column-title">Item Price </th>
+                                    <th class="column-title">Item Stock </th>
+                                    <th class="column-title">Item Status </th>
+                                    <th class="column-title no-link last">
+                                        <span class="nobr">Action</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="even pointer">
+                                    <td class=" ">Micin</td>
+                                    <td class=" ">Rp. 10,000,000,- </td>
+                                    <td class=" ">0</td>
+                                    <td class=" ">Sold Out</td>
+                                    <td class=" last">
+                                        <a href="#">Update</a>
+                                        or
+                                        <a href="#">Delete</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal bs-example-modal-md modal-add-item" style="background-color: rgba(0, 0, 0, 0.5)">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close btn-close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalTitle">Add Item</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" class="form-horizontal">
+                        {!! csrf_field() !!}
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="text" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Item Name...">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Item Price <span class="required">*</span>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Item Price...">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Item Stock<span class="required">*</span>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="number" id="stock" class="form-control col-md-7 col-xs-12" name="stock" placeholder="Item Stock...">
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-8">
+                                <button type="reset" class="btn btn-default btn-close">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script>
+        $('.form-new-item').submit(function(e){
+            e.preventDefault();
+            $('.modal-add-item').show();
+        });
+
+
+        $('.btn-close').click(function(){
+            $('.modal-add-item').hide();
+        });
+    </script>
 @endsection
