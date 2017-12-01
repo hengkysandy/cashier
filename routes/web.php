@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@view');
 
+Route::get('/room', function () {
+    return view('room');
+});
+
 Route::get('/item', function () {
     return view('item');
 });

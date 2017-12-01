@@ -29,13 +29,16 @@
                         <a href="/home"><i class="fa fa-home"></i>Home</a>
                     </li>
                     <li>
-                        <a href="/item"><i class="fa fa-eye"></i>Item</a>
+                        <a href="/room"><i class="fa fa-bank"></i>Room</a>
                     </li>
                     <li>
-                        <a href="/report"><i class="fa fa-calendar"></i>Report</a>
+                        <a href="/item"><i class="fa fa-archive"></i>Item</a>
                     </li>
                     <li>
                         <a href="/employee"><i class="fa fa-user"></i>Employee</a>
+                    </li>
+                    <li>
+                        <a href="/report"><i class="fa fa-calendar"></i>Report</a>
                     </li>
                 </ul>
             </div>

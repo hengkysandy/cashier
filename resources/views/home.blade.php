@@ -21,9 +21,9 @@
         <div class="x_content">
             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                    <li role="presentation" class="active" style="width: 48%"><a href="#tab_content1" id="room-tab" role="tab" data-toggle="tab" aria-expanded="true">Room</a>
+                    <li role="presentation" class="active" style="width: 48%"><a href=".tab_content1" id="room-tab" role="tab" data-toggle="tab" aria-expanded="true">Room</a>
                     </li>
-                    <li role="presentation" class="" style="width: 48%"><a href="#tab_content2" role="tab" id="hall-tab" data-toggle="tab" aria-expanded="false">Hall</a>
+                    <li role="presentation" class="" style="width: 48%"><a href=".tab_content2" role="tab" id="hall-tab" data-toggle="tab" aria-expanded="false">Hall</a>
                     </li>
                 </ul>
             </div>
@@ -31,7 +31,7 @@
             <div class="row tab-content" id="myTabContent">
                 @foreach($rooms as $key => $room)
                     @if($room->type == 'Room')
-                        <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade active in" role="tabpanel" id="tab_content1" aria-labelledby="room-tab">
+                        <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade active in tab_content1" role="tabpanel" aria-labelledby="room-tab">
                             <div class="x_panel tile fixed_height_210">
                                 <div class="x_title" style="margin-bottom: 0px;">
                                     <h2>{{ $room->name }}</h2>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     @else
-                        <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade" role="tabpanel" id="tab_content2" aria-labelledby="hall-tab">
+                        <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade tab_content2" role="tabpanel" aria-labelledby="hall-tab">
                             <div class="x_panel tile fixed_height_210">
                                 <div class="x_title" style="margin-bottom: 0px;">
                                     <h2>{{ $room->name }}</h2>
@@ -163,6 +163,13 @@
                                 <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Booking Price...">
                             </div>
                         </div>
+                        <div class="add-item">
+                        </div>
+                        <div class="item form-group">
+                            <div class="col-md-8 col-sm-offset-3">
+                                <button type="button" class="btn btn-default btn-success btn-add-item">Add Item</button>
+                            </div>
+                        </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-8 col-sm-offset-8">
@@ -190,5 +197,11 @@
         $('.btn-close').click(function(){
             $('.modal-book').hide();
         });
+
+        $('.btn-add-item').click(function(e){
+            e.preventDefault();
+            $('.add-item').append('<div class="item form-group"><div class="col-md-9 col-sm-offset-3"><select class="form-control" name="itemName"><option>Choose Item</option></select></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-9 col-sm-offset-3"><input type="number" id="itemPrice" class="form-control col-md-7 col-xs-12" name="itemPrice" placeholder="Item Price..."></div></div>');
+        })
     </script>
 @endsection

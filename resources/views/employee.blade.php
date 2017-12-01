@@ -63,9 +63,8 @@
                                     <td class=" ">Admin</td>
                                     <td class=" ">Active</td>
                                     <td class=" last">
-                                        <a href="#">Update</a>
-                                        or
-                                        <a href="#">Delete</a>
+                                        <button type="button" class="btn btn-primary btn-xs">Update</button>
+                                        <button type="button" class="btn btn-danger btn-xs">Delete</button>
                                     </td>
                                 </tr>
                                 </tbody>
