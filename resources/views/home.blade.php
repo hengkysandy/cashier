@@ -186,7 +186,9 @@
 
 @section('script')
     <script>
-        $('.form-book').submit(function(e){
+        $items = <?php echo $items?>;
+
+        $(".form-book").submit(function(e){
             e.preventDefault();
             $('#myModalTitle').html('Booking ' + $(this).children('.type').val() + ' Detail');
             $('.roomId').val($(this).children('.id').val());
@@ -200,8 +202,21 @@
 
         $('.btn-add-item').click(function(e){
             e.preventDefault();
-            $('.add-item').append('<div class="item form-group"><div class="col-md-9 col-sm-offset-3"><select class="form-control" name="itemName"><option>Choose Item</option></select></div></div>');
-            $('.add-item').append('<div class="item form-group"><div class="col-md-9 col-sm-offset-3"><input type="number" id="itemPrice" class="form-control col-md-7 col-xs-12" name="itemPrice" placeholder="Item Price..."></div></div>');
-        })
+            $item = '';
+            $.each($items,function(index, value){
+                $item = $item + '<option value="'+value.name+'">'+value.name+'</option>';
+            });
+            $('.add-item').append('<div class="item form-group"><div class="col-md-8 col-sm-offset-3"><select class="form-control itemName" name="itemName">'+$item+'<option value="other">other</option></select></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-8 col-sm-offset-3"><input type="number" id="itemQuantity" class="form-control col-md-7 col-xs-12 itemQuantity" name="itemQuantity" placeholder="Item Quantity..."></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div></div>');
+        });
+
+        $(document).on('change','.itemName',function(){
+            if($(this).val() == 'other')
+               $(this).parent().parent().find('.add-other').append('<div class="col-md-8 col-sm-offset-3 validate"><input type="text" id="itemOther" class="form-control col-md-7 col-xs-12 itemOther" name="itemOther" placeholder="Item Name..."></div><div class="col-sm-1 validate"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div>');
+        });
+
+        $(document).on('click','.btn-minus',function(){
+            $(this).parent().parent().remove();
+        });
     </script>
 @endsection
