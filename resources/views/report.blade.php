@@ -32,22 +32,69 @@
                 <div class="col-md-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Report Calendar Events</h2>
+                            <h2>Show Report</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li>
-                                    <form class="form-add-report">
-                                        <input type="submit" value="New Report" class="btn btn-success">
-                                    </form>
+                                    <span class="form-control toggleSelect"><i class="fa fa-filter"></i></span>
+                                </li>
+                                <li class="showSelect">
+                                    <select class="form-control col-md-6 filter-report">
+                                        <option value="Day">Day</option>
+                                        <option value="Month">Month</option>
+                                        <option value="Year">Year</option>
+                                    </select>
                                 </li>
                             </ul>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <div id='calendar'></div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">Room Name </th>
+                                        <th class="column-title">Room Price </th>
+                                        <th class="column-title">Employee Name </th>
+                                        <th class="column-title">Customer Name </th>
+                                        <th class="column-title">Customer Phone </th>
+                                        <th class="column-title">Booking Hour </th>
+                                        <th class="column-title">Booking Date </th>
+                                        <th class="column-title no-link last">
+                                            <span class="nobr">Action</span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="even pointer">
+                                        <td class=" ">Room 1</td>
+                                        <td class=" ">Rp. 10,000,000,- </td>
+                                        <td class=" ">Hengky Tebe</td>
+                                        <td class=" ">Andy</td>
+                                        <td class=" ">081208120812</td>
+                                        <td class=" ">2</td>
+                                        <td class=" ">On Going</td>
+                                        <td class=" last">
+                                            <button type="button" class="btn btn-primary btn-xs">Update</button>
+                                            <button type="button" class="btn btn-danger btn-xs">Delete</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $('.showSelect').hide();
+
+        $('.toggleSelect').click(function(){
+           $('.showSelect').toggle();
+        });
+    </script>
 @endsection

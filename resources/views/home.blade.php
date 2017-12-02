@@ -206,8 +206,7 @@
             $.each($items,function(index, value){
                 $item = $item + '<option value="'+value.name+'">'+value.name+'</option>';
             });
-            $('.add-item').append('<div class="item form-group"><div class="col-md-8 col-sm-offset-3"><select class="form-control itemName" name="itemName">'+$item+'<option value="other">other</option></select></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"></div></div>');
-            $('.add-item').append('<div class="item form-group"><div class="col-md-8 col-sm-offset-3"><input type="number" id="itemQuantity" class="form-control col-md-7 col-xs-12 itemQuantity" name="itemQuantity" placeholder="Item Quantity..."></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-6 col-sm-offset-3"><select class="form-control itemName" name="itemName">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" class="form-control col-md-7 col-xs-12 itemQuantity" name="itemQuantity" value="0"></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"></div></div>');
         });
 
         $(document).on('change','.itemName',function(){
