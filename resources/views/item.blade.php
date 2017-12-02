@@ -85,7 +85,7 @@
                     <h4 class="modal-title" id="myModalTitle">Add Item</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" class="form-horizontal">
+                    <form action="{{url('createItem')}}" method="POST" class="form-horizontal">
                         {!! csrf_field() !!}
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2017 at 12:55 PM
+-- Generation Time: Dec 02, 2017 at 03:47 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 7.0.13
 
@@ -34,8 +34,8 @@ CREATE TABLE `employee` (
   `password` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -43,9 +43,10 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`id`, `role_id`, `email`, `name`, `password`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'manager1@gmail.com', 'manager1', '123123', 'active', '2017-12-01 11:30:04', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 2, 'staff1@gmail.com', 'staff1', '123123', 'active', '2017-12-01 11:30:20', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 2, 'staff2@gmail.com', 'staff2', '123123', 'active', '2017-12-01 11:30:32', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 1, 'manager1@gmail.com', 'manager1', '123123', 'active', '2017-12-01 11:30:04', '0000-00-00 00:00:00', NULL),
+(2, 2, 'staff1@gmail.com', 'staff1', '123123', 'active', '2017-12-01 11:30:20', '0000-00-00 00:00:00', NULL),
+(3, 2, 'staff2@gmail.com', 'staff2', '123123', 'active', '2017-12-01 11:30:32', '0000-00-00 00:00:00', NULL),
+(4, 2, 'newStaff@gmail.com', 'newStaff', '123123', 'active', '2017-12-01 19:37:30', '2017-12-01 19:37:30', NULL);
 
 -- --------------------------------------------------------
 
@@ -60,8 +61,8 @@ CREATE TABLE `item` (
   `stock` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -69,10 +70,11 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`id`, `name`, `price`, `stock`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'beer', 50000, 20, 'active', '2017-12-01 11:31:36', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'botol aqua', 4000, 50, 'active', '2017-12-01 11:31:53', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'teh kotak', 5000, 60, 'active', '2017-12-01 11:32:31', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'nasi padang', 15000, 15, 'active', '2017-12-01 11:32:54', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'beer', 50000, 20, 'active', '2017-12-01 11:31:36', '0000-00-00 00:00:00', NULL),
+(2, 'botol aqua', 4000, 50, 'active', '2017-12-01 11:31:53', '0000-00-00 00:00:00', NULL),
+(3, 'teh kotak', 5000, 60, 'active', '2017-12-01 11:32:31', '0000-00-00 00:00:00', NULL),
+(4, 'nasi padang', 15000, 15, 'active', '2017-12-01 11:32:54', '0000-00-00 00:00:00', NULL),
+(5, 'item1', 5000, 88, 'active', '2017-12-01 19:42:51', '2017-12-01 19:42:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -84,8 +86,8 @@ CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -93,8 +95,8 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Manager', '2017-12-01 11:29:26', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Staff', '2017-12-01 11:29:31', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'Manager', '2017-12-01 11:29:26', '0000-00-00 00:00:00', NULL),
+(2, 'Staff', '2017-12-01 11:29:31', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -108,8 +110,8 @@ CREATE TABLE `room` (
   `price` float DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -117,15 +119,16 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`id`, `name`, `price`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Room601', 50000, 'Room', '2017-12-01 11:33:31', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Room602', 60000, 'Room', '2017-12-01 11:33:42', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'Room603', 50000, 'Room', '2017-12-01 11:33:51', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'Room604', 60000, 'Room', '2017-12-01 11:34:02', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'Room605', 70000, 'Room', '2017-12-01 11:34:11', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'Hall701', NULL, 'Hall', '2017-12-01 11:34:25', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'Hall702', NULL, 'Hall', '2017-12-01 11:34:30', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'Hall703', NULL, 'Hall', '2017-12-01 11:34:40', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'Hall704', NULL, 'Hall', '2017-12-01 11:34:46', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'Room601', 50000, 'Room', '2017-12-01 11:33:31', '0000-00-00 00:00:00', NULL),
+(2, 'Room602', 60000, 'Room', '2017-12-01 11:33:42', '0000-00-00 00:00:00', NULL),
+(3, 'Room603', 50000, 'Room', '2017-12-01 11:33:51', '0000-00-00 00:00:00', NULL),
+(4, 'Room604', 60000, 'Room', '2017-12-01 11:34:02', '0000-00-00 00:00:00', NULL),
+(5, 'Room605', 70000, 'Room', '2017-12-01 11:34:11', '0000-00-00 00:00:00', NULL),
+(6, 'Hall701', NULL, 'Hall', '2017-12-01 11:34:25', '0000-00-00 00:00:00', NULL),
+(7, 'Hall702', NULL, 'Hall', '2017-12-01 11:34:30', '0000-00-00 00:00:00', NULL),
+(8, 'Hall703', NULL, 'Hall', '2017-12-01 11:34:40', '0000-00-00 00:00:00', NULL),
+(9, 'Hall704', NULL, 'Hall', '2017-12-01 11:34:46', '0000-00-00 00:00:00', NULL),
+(10, 'newRoom', 70001, 'Room', '2017-12-01 19:47:08', '2017-12-01 19:47:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -143,8 +146,8 @@ CREATE TABLE `transaction` (
   `booking_hour` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -152,7 +155,7 @@ CREATE TABLE `transaction` (
 --
 
 INSERT INTO `transaction` (`id`, `room_id`, `room_price`, `employee_id`, `customer_name`, `customer_phone`, `booking_hour`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 50000, 2, 'andy', '081208120812', 2, 'On Going', '2017-12-01 11:36:12', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 1, 50000, 2, 'andy', '081208120812', 2, 'On Going', '2017-12-01 11:36:12', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -169,8 +172,8 @@ CREATE TABLE `transaction_detail` (
   `other_item_price` float DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -178,8 +181,8 @@ CREATE TABLE `transaction_detail` (
 --
 
 INSERT INTO `transaction_detail` (`id`, `id_transaction`, `item_id`, `item_price`, `other_item_name`, `other_item_price`, `quantity`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 50000, NULL, NULL, 2, '2017-12-01 11:51:32', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 1, 2, 4000, NULL, NULL, 4, '2017-12-01 11:54:09', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 1, 1, 50000, NULL, NULL, 2, '2017-12-01 11:51:32', '0000-00-00 00:00:00', NULL),
+(2, 1, 2, 4000, NULL, NULL, 4, '2017-12-01 11:54:09', '0000-00-00 00:00:00', NULL);
 
 --
 -- Indexes for dumped tables
@@ -234,12 +237,12 @@ ALTER TABLE `transaction_detail`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `role`
 --
@@ -249,7 +252,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `transaction`
 --

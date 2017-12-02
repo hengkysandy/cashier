@@ -85,27 +85,36 @@
                     <h4 class="modal-title" id="myModalTitle">Add Employee</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" class="form-horizontal">
+                    <form action="{{url('createEmployee')}}" method="POST" class="form-horizontal">
                         {!! csrf_field() !!}
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Employee Role<span class="required">*</span>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <select name="role" class="form-control">
+                                    <option value="Staff">Staff</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Employee Name <span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="text" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Employee Name...">
+                                <input required="" type="text" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Employee Name...">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Password <span class="required">*</span>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input required="" type="password" id="password" class="form-control col-md-7 col-xs-12" name="password" placeholder="Password...">
                             </div>
                         </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Employee Email <span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="email" id="email" class="form-control col-md-7 col-xs-12" name="email" placeholder="Employee Email...">
-                            </div>
-                        </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Employee Role<span class="required">*</span>
-                            </label>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="text" id="role" class="form-control col-md-7 col-xs-12" name="role" placeholder="Employee Role...">
+                                <input required="" type="email" id="email" class="form-control col-md-7 col-xs-12" name="email" placeholder="Employee Email...">
                             </div>
                         </div>
                         <div class="ln_solid"></div>

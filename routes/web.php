@@ -15,20 +15,26 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/home', 'HomeController@view');
+Route::get('home', 'HomeController@view');
 
-Route::get('/room', function () {
+Route::get('room', function () {
     return view('room');
 });
 
-Route::get('/item', function () {
+Route::get('item', function () {
     return view('item');
 });
 
-Route::get('/report', function () {
+Route::get('report', function () {
     return view('report');
 });
 
-Route::get('/employee', function () {
+Route::get('employee', function () {
     return view('employee');
 });
+
+Route::post('createEmployee', 'EmployeeController@create');
+Route::post('createItem', 'ItemController@create');
+Route::post('createRoom', 'RoomController@create');
+
+

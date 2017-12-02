@@ -85,8 +85,19 @@
                     <h4 class="modal-title" id="myModalTitle">Add Room</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" class="form-horizontal">
+                    <form action="{{url('createRoom')}}" method="POST" class="form-horizontal">
                         {!! csrf_field() !!}
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Room Type<span class="required">*</span>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <select name="type" class="form-control">
+                                    <option value="Room">Room</option>
+                                    <option value="Hall">Hall</option>
+                                </select>
+                            </div>
+                            
+                        </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Room Name <span class="required">*</span>
                             </label>
@@ -99,13 +110,6 @@
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Room Price...">
-                            </div>
-                        </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Room Type<span class="required">*</span>
-                            </label>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="text" id="type" class="form-control col-md-7 col-xs-12" name="type" placeholder="Room Type...">
                             </div>
                         </div>
                         <div class="ln_solid"></div>
