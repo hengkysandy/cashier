@@ -16,13 +16,14 @@ Route::group(['middleware' => 'guest'], function () {
         return view('login');
     });
 
-    Route::post('doLogin', 'Auth\LoginController@login');
+    // Route::post('doLogin', 'Auth\LoginController@login');
+    Route::post('doLogin', 'EmployeeController@login');
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'checkUser'], function () {
     //Home
     Route::get('home', 'HomeController@view');
-    Route::post('book', 'HomeController@book');
+    Route::post('createBooking', 'HomeController@createBooking');
 
     // Room
     Route::get('room', 'RoomController@view');
@@ -46,5 +47,5 @@ Route::group(['middleware' => 'auth'], function () {
         return view('report');
     });
 
-    Route::get('doLogout', 'Auth\LoginController@logout');
+    Route::get('logoutUser', 'EmployeeController@logoutUser');
 });

@@ -124,8 +124,8 @@
         <div class="clearfix"></div>
     </div>
 
-    <div class="modal bs-example-modal-md modal-book" style="background-color: rgba(0, 0, 0, 0.5)">
-        <div class="modal-dialog modal-md">
+    <div class="modal bs-example-modal-lg modal-book" style="background-color: rgba(0, 0, 0, 0.5)">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close btn-close"><span aria-hidden="true">×</span>
@@ -133,7 +133,7 @@
                     <h4 class="modal-title" id="myModalTitle"></h4>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" class="form-horizontal form-label-left">
+                    <form action="{{url('createBooking')}}" method="POST" class="form-horizontal form-label-left">
                         {!! csrf_field() !!}
                         <input type="hidden" name="roomId" class="roomId" value="">
                         <input type="hidden" name="roomType" class="roomType" value="">
@@ -162,7 +162,8 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Booking Price<span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Booking Price...">
+                                <input type="number" class="form-control col-md-7 col-xs-12 bookingPrice" name="price" placeholder="Booking Price..." disabled="">
+                                <input type="hidden" name="price" class="bookingPrice">
                             </div>
                         </div>
                         <div class="add-item">
@@ -195,7 +196,7 @@
             $('#myModalTitle').html('Booking ' + $(this).children('.type').val() + ' Detail');
             $('.roomId').val($(this).children('.id').val());
             $('.roomType').val($(this).children('.type').val());
-            $('.modal-book').find('#price').val($(this).children('.price').val());
+            $('.modal-book').find('.bookingPrice').val($(this).children('.price').val());
             $('.modal-book').show();
         });
 
@@ -207,24 +208,28 @@
             e.preventDefault();
             $item = '';
             $.each($items,function(index, value){
-                $item = $item + '<option value="'+value.name+'">'+value.name+'</option>';
+                $item = $item + '<option value="'+value.id+'">'+value.name+'</option>';
             });
-            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
         });
 
         $(document).on('change','.itemName',function(){
             $item = '';
+            $price = 0;
+            $id = $(this).parent().parent().find('.itemName').val();
             $.each($items,function(index, value){
-                if($('.itemName').val() == value.name)
-                    $('.itemPrice').val(value.price);
+                if($id == value.id){
+                    $price = value.price;
+                    return;
+                }
             });
-
-            if($(this).val() == 'other') {
-                $(this).parent().parent().find('.add-other').append('<div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther" placeholder="Item Name..."></div>');
-                $('.itemPrice').val("");
+            $(this).parent().parent().find('.itemPrice').val($price);
+            if($(this).val() == 'other'){
+                $(this).parent().parent().find('.add-other .itemOther').css("display","block");
+                $(this).parent().parent().find('.itemPrice').val("");
             }
             else
-                $(this).parent().parent().find('.add-other').children().remove();
+                $(this).parent().parent().find('.add-other .itemOther').css("display","none");
         });
 
         $(document).on('click','.btn-minus',function(){

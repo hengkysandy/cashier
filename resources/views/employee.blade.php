@@ -49,7 +49,6 @@
                                 <tr class="headings">
                                     <th class="column-title">Employee Name </th>
                                     <th class="column-title">Employee Email </th>
-                                    <th class="column-title">Employee Password</th>
                                     <th class="column-title">Employee Role </th>
                                     <th class="column-title">Employee Status </th>
                                     <th class="column-title no-link last">
@@ -63,8 +62,7 @@
                                         <td style="display: none" class="employee_id">{{ $employee->id }}</td>
                                         <td class="employee_name">{{ $employee->name }}</td>
                                         <td class="employee_email">{{ $employee->email }}</td>
-                                        <td class="employee_password">{{ $employee->password }}</td>
-                                        <td class="employee_role">{{ $employee->role_id }}</td>
+                                        <td class="employee_role">{{ $employee->Role->name }}</td>
                                         <td class="employee_status">{{ $employee->status }}</td>
                                         <td class=" last">
                                             <button type="button" class="btn btn-primary btn-xs btn-update-employee">Update</button>
@@ -168,7 +166,6 @@
             $('.modal-add-employee').find('#id').val(0);
             $('.modal-add-employee').find('#name').val("");
             $('.modal-add-employee').find('#email').val("");
-            $('.modal-add-employee').find('#password').val("");
             $('.modal-add-employee').show();
         });
 
@@ -184,7 +181,6 @@
             $('.modal-add-employee').find('#id').val($(this).parent().parent().find('.employee_id').text());
             $('.modal-add-employee').find('#name').val($(this).parent().parent().find('.employee_name').text());
             $('.modal-add-employee').find('#email').val($(this).parent().parent().find('.employee_email').text());
-            $('.modal-add-employee').find('#password').val($(this).parent().parent().find('.employee_password').text());
             $('.modal-add-employee').show();
         });
 

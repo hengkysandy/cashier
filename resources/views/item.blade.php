@@ -21,6 +21,7 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Show Item</h2>
+                        @if( session()->get('userSession')->role_id == 1 )
                         <ul class="nav navbar-right panel_toolbox">
                             <li>
                                 <form class="form-new-item">
@@ -28,6 +29,7 @@
                                 </form>
                             </li>
                         </ul>
+                        @endif
                         <div class="clearfix"></div>
                     </div>
 
@@ -40,9 +42,11 @@
                                         <th class="column-title">Item Price </th>
                                         <th class="column-title">Item Stock </th>
                                         <th class="column-title">Item Status </th>
+                                        @if( session()->get('userSession')->role_id == 1 )
                                         <th class="column-title no-link last">
                                             <span class="nobr">Action</span>
                                         </th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,10 +57,13 @@
                                             <td class="item_price">Rp. {{ number_format($item->price,0,'','.') }},- </td>
                                             <td class="item_stock">{{ $item->stock }}</td>
                                             <td class="item_status">{{ $item->status }}</td>
-                                            <td class=" last">
+                                            @if( session()->get('userSession')->role_id == 1 )
+                                                <td class=" last">
                                                 <button type="button" class="btn btn-primary btn-xs btn-update-item">Update</button>
                                                 <button type="button" class="btn btn-danger btn-xs btn-delete-item">Delete</button>
                                             </td>
+                                            @endif
+                                            
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -157,7 +164,7 @@
 
         $('.btn-update-item').click(function(e){
             e.preventDefault();
-            $price = Number($(this).parent().parent().find('.room_price').text().replace(/[.,-]/g,"").split('Rp ')[1]);
+            $price = Number($(this).parent().parent().find('.item_price').text().replace(/[.,-]/g,"").split('Rp ')[1]);
             $('.modal-add-item').find('#myModalTitle').html("Update Item");
             $('.modal-add-item').find('.form-add-item').attr('action','updateItem');
             $('.modal-add-item').find('#id').val($(this).parent().parent().find('.item_id').text());

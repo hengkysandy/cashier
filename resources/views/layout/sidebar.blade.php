@@ -10,7 +10,7 @@
         <div class="profile clearfix">
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Hengky Tebe</h2>
+                <h2>{{session()->get('userSession')->name}}</h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -26,17 +26,21 @@
                         <a href="/home"><i class="fa fa-home"></i>Home</a>
                     </li>
                     <li>
-                        <a href="/room"><i class="fa fa-bank"></i>Room</a>
+                        <a href="/report"><i class="fa fa-calendar"></i>Report</a>
                     </li>
                     <li>
                         <a href="/item"><i class="fa fa-archive"></i>Item</a>
                     </li>
+                    @if( session()->get('userSession')->role_id == 1 )
+                    <li>
+                        <a href="/room"><i class="fa fa-bank"></i>Room</a>
+                    </li>
+                    
                     <li>
                         <a href="/employee"><i class="fa fa-user"></i>Employee</a>
                     </li>
-                    <li>
-                        <a href="/report"><i class="fa fa-calendar"></i>Report</a>
-                    </li>
+                    @endif
+                    
                 </ul>
             </div>
         </div>

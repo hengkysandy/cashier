@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class RoomController extends Controller
 {
 	public function view(){
+		if(session()->get('userSession')->role_id == 2) return back();
+		
 		$rooms = Room::all();
 
 		return view('room',compact('rooms'));

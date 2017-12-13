@@ -9,10 +9,32 @@ use Illuminate\Http\Request;
 class EmployeeController extends Controller
 {
 	public function view(){
+		if(session()->get('userSession')->role_id == 2) return back();
 		$employees = Employee::all();
 
 		return view('employee',compact('employees'));
 	}
+
+	public function login(Request $request)
+	{
+		$login = Employee::where('name',$request->name)
+						->where('password',$request->password)
+						->first();
+
+		if($login){
+			$request->session()->put('userSession', $login);
+			return redirect('home');
+		}else{
+			return redirect()->back()->withErrors('');
+		}
+		
+	}
+
+	public function logoutUser(Request $request)
+    {
+        $request->session()->forget('userSession');
+        return redirect('/');
+    }
 
     public function create(Request $request)
     {
