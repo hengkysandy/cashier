@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+	public function view(){
+		$employees = Employee::all();
+
+		return view('employee',compact('employees'));
+	}
+
     public function create(Request $request)
     {
     	Employee::create([
@@ -20,4 +26,21 @@ class EmployeeController extends Controller
 
     	return back();
     }
+
+	public function update(Request $request){
+		$employee = Employee::find($request->id);
+		$employee->email = $request->email;
+		$employee->name = $request->name;
+		$employee->password = $request->password;
+		$employee->save();
+
+		return back();
+	}
+
+	public function delete($id){
+		$employee = Employee::find($id);
+		$employee->delete();
+
+		return back();
+	}
 }

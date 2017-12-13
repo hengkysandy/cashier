@@ -49,6 +49,7 @@
                                 <tr class="headings">
                                     <th class="column-title">Employee Name </th>
                                     <th class="column-title">Employee Email </th>
+                                    <th class="column-title">Employee Password</th>
                                     <th class="column-title">Employee Role </th>
                                     <th class="column-title">Employee Status </th>
                                     <th class="column-title no-link last">
@@ -57,16 +58,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="even pointer">
-                                    <td class=" ">Hengky Tebe</td>
-                                    <td class=" ">htebe@gmail.com</td>
-                                    <td class=" ">Admin</td>
-                                    <td class=" ">Active</td>
-                                    <td class=" last">
-                                        <button type="button" class="btn btn-primary btn-xs">Update</button>
-                                        <button type="button" class="btn btn-danger btn-xs">Delete</button>
-                                    </td>
-                                </tr>
+                                @foreach($employees as $employee)
+                                    <tr class="even pointer">
+                                        <td style="display: none" class="employee_id">{{ $employee->id }}</td>
+                                        <td class="employee_name">{{ $employee->name }}</td>
+                                        <td class="employee_email">{{ $employee->email }}</td>
+                                        <td class="employee_password">{{ $employee->password }}</td>
+                                        <td class="employee_role">{{ $employee->role_id }}</td>
+                                        <td class="employee_status">{{ $employee->status }}</td>
+                                        <td class=" last">
+                                            <button type="button" class="btn btn-primary btn-xs btn-update-employee">Update</button>
+                                            <button type="button" class="btn btn-danger btn-xs btn-delete-employee">Delete</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -85,8 +90,9 @@
                     <h4 class="modal-title" id="myModalTitle">Add Employee</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url('createEmployee')}}" method="POST" class="form-horizontal">
+                    <form method="POST" class="form-horizontal form-add-employee">
                         {!! csrf_field() !!}
+                        <input type="hidden" name="id" id="id">
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Employee Role<span class="required">*</span>
                             </label>
@@ -129,18 +135,64 @@
             </div>
         </div>
     </div>
+
+    <div class="modal bs-example-modal-sm modal-delete-employee" style="background-color: rgba(0, 0, 0, 0.5)">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close btn-close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalTitle">Delete Employee</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="GET" class="form-horizontal form-delete-employee">
+                        <div class="item form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-danger col-sm-offset-3">Yes</button>
+                                <button type="reset" class="btn btn-info btn-close col-sm-offset-1">No</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script>
         $('.form-new-employee').submit(function(e){
             e.preventDefault();
+            $('.modal-add-employee').find('#myModalTitle').html("Add Employee");
+            $('.modal-add-employee').find('.form-add-employee').attr('action','createEmployee');
+            $('.modal-add-employee').find('#id').val(0);
+            $('.modal-add-employee').find('#name').val("");
+            $('.modal-add-employee').find('#email').val("");
+            $('.modal-add-employee').find('#password').val("");
             $('.modal-add-employee').show();
         });
 
-
         $('.btn-close').click(function(){
             $('.modal-add-employee').hide();
+            $('.modal-delete-employee').hide();
+        });
+
+        $('.btn-update-employee').click(function(e){
+            e.preventDefault();
+            $('.modal-add-employee').find('#myModalTitle').html("Update Employee");
+            $('.modal-add-employee').find('.form-add-employee').attr('action','updateEmployee');
+            $('.modal-add-employee').find('#id').val($(this).parent().parent().find('.employee_id').text());
+            $('.modal-add-employee').find('#name').val($(this).parent().parent().find('.employee_name').text());
+            $('.modal-add-employee').find('#email').val($(this).parent().parent().find('.employee_email').text());
+            $('.modal-add-employee').find('#password').val($(this).parent().parent().find('.employee_password').text());
+            $('.modal-add-employee').show();
+        });
+
+        $('.btn-delete-employee').click(function(e){
+            e.preventDefault();
+            $link = 'deleteEmployee/' + $(this).parent().parent().find('.employee_id').text();
+            $('.modal-delete-employee').find('.form-delete-employee').attr('action',$link);
+            $('.modal-delete-employee').show();
         });
     </script>
 @endsection

@@ -33,6 +33,11 @@
     <!-- Custom Theme Style -->
     <link href="{{ asset('css/build/css/custom.min.css') }}" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="{{ asset('css/vendors/pnotify/dist/pnotify.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendors/pnotify/dist/pnotify.buttons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendors/pnotify/dist/pnotify.nonblock.css') }}" rel="stylesheet">
+
     @yield('style')
 </head>
 <body class="nav-md">
@@ -104,6 +109,16 @@
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('css/build/js/custom.min.js') }}"></script>
 
+    <!-- PNotify -->
+    <script src="{{ asset('css/vendors/pnotify/dist/pnotify.js') }}"></script>
+    <script src="{{ asset('css/vendors/pnotify/dist/pnotify.buttons.js') }}"></script>
+    <script src="{{ asset('css/vendors/pnotify/dist/pnotify.nonblock.js') }}"></script>
+
+    <script>
+        $(document).ready(function (){
+            $('.ui-pnotify').remove();
+        });
+    </script>
     @yield('script')
 </body>
 </html>

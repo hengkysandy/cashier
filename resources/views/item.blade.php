@@ -12,17 +12,6 @@
             <div class="title_left">
                 <h3>Item</h3>
             </div>
-
-            <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Item...">
-                        <span class="input-group-btn">
-                          <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="clearfix"></div>
@@ -46,27 +35,30 @@
                         <div class="table-responsive">
                             <table class="table table-striped jambo_table bulk_action">
                                 <thead>
-                                <tr class="headings">
-                                    <th class="column-title">Item Name </th>
-                                    <th class="column-title">Item Price </th>
-                                    <th class="column-title">Item Stock </th>
-                                    <th class="column-title">Item Status </th>
-                                    <th class="column-title no-link last">
-                                        <span class="nobr">Action</span>
-                                    </th>
-                                </tr>
+                                    <tr class="headings">
+                                        <th class="column-title">Item Name </th>
+                                        <th class="column-title">Item Price </th>
+                                        <th class="column-title">Item Stock </th>
+                                        <th class="column-title">Item Status </th>
+                                        <th class="column-title no-link last">
+                                            <span class="nobr">Action</span>
+                                        </th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="even pointer">
-                                    <td class=" ">Micin</td>
-                                    <td class=" ">Rp. 10,000,000,- </td>
-                                    <td class=" ">0</td>
-                                    <td class=" ">Sold Out</td>
-                                    <td class=" last">
-                                        <button type="button" class="btn btn-primary btn-xs">Update</button>
-                                        <button type="button" class="btn btn-danger btn-xs">Delete</button>
-                                    </td>
-                                </tr>
+                                    @foreach($items as $item)
+                                        <tr class="even pointer">
+                                            <td style="display: none" class="item_id">{{ $item->id }}</td>
+                                            <td class="item_name">{{ $item->name }}</td>
+                                            <td class="item_price">Rp. {{ number_format($item->price,0,'','.') }},- </td>
+                                            <td class="item_stock">{{ $item->stock }}</td>
+                                            <td class="item_status">{{ $item->status }}</td>
+                                            <td class=" last">
+                                                <button type="button" class="btn btn-primary btn-xs btn-update-item">Update</button>
+                                                <button type="button" class="btn btn-danger btn-xs btn-delete-item">Delete</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -85,8 +77,9 @@
                     <h4 class="modal-title" id="myModalTitle">Add Item</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url('createItem')}}" method="POST" class="form-horizontal">
+                    <form method="POST" class="form-horizontal form-add-item">
                         {!! csrf_field() !!}
+                        <input type="hidden" name="id" id="id">
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>
                             </label>
@@ -120,18 +113,65 @@
             </div>
         </div>
     </div>
+
+    <div class="modal bs-example-modal-sm modal-delete-item" style="background-color: rgba(0, 0, 0, 0.5)">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close btn-close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalTitle">Delete Item</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="GET" class="form-horizontal form-delete-item">
+                        <div class="item form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-danger col-sm-offset-3">Yes</button>
+                                <button type="reset" class="btn btn-info btn-close col-sm-offset-1">No</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script>
         $('.form-new-item').submit(function(e){
             e.preventDefault();
+            $('.modal-add-item').find('#myModalTitle').html("Add Item");
+            $('.modal-add-item').find('.form-add-item').attr('action','createItem');
+            $('.modal-add-item').find('#id').val(0);
+            $('.modal-add-item').find('#name').val("");
+            $('.modal-add-item').find('#price').val("");
+            $('.modal-add-item').find('#stock').val("");
             $('.modal-add-item').show();
         });
 
-
         $('.btn-close').click(function(){
             $('.modal-add-item').hide();
+            $('.modal-delete-item').hide();
+        });
+
+        $('.btn-update-item').click(function(e){
+            e.preventDefault();
+            $price = Number($(this).parent().parent().find('.room_price').text().replace(/[.,-]/g,"").split('Rp ')[1]);
+            $('.modal-add-item').find('#myModalTitle').html("Update Item");
+            $('.modal-add-item').find('.form-add-item').attr('action','updateItem');
+            $('.modal-add-item').find('#id').val($(this).parent().parent().find('.item_id').text());
+            $('.modal-add-item').find('#name').val($(this).parent().parent().find('.item_name').text());
+            $('.modal-add-item').find('#stock').val(Number($(this).parent().parent().find('.item_stock').text()));
+            $('.modal-add-item').find('#price').val($price);
+            $('.modal-add-item').show();
+        });
+
+        $('.btn-delete-item').click(function(e){
+            e.preventDefault();
+            $link = 'deleteItem/' + $(this).parent().parent().find('.item_id').text();
+            $('.modal-delete-item').find('.form-delete-item').attr('action',$link);
+            $('.modal-delete-item').show();
         });
     </script>
 @endsection

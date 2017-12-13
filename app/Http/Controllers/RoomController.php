@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
+	public function view(){
+		$rooms = Room::all();
+
+		return view('room',compact('rooms'));
+	}
+
     public function create(Request $request)
     {
     	Room::create([
@@ -18,5 +24,20 @@ class RoomController extends Controller
     	return back();
     }
 
+	public function update(Request $request){
+		$room = Room::find($request->id);
+		$room->name = $request->name;
+		$room->type = $request->type;
+		$room->price = $request->price;
+		$room->save();
 
+		return back();
+	}
+
+	public function delete($id){
+		$room = Room::find($id);
+		$room->delete();
+
+		return back();
+	}
 }

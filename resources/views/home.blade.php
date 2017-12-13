@@ -40,6 +40,7 @@
                                             <form class="form-book">
                                                 <input type="hidden" class="id" value="{{ $room->id }}">
                                                 <input type="hidden" class="type" value="{{ $room->type }}">
+                                                <input type="hidden" class="price" value="{{ $room->price }}">
                                                 <input type="submit" value="{{ $room->name!=""?"Book":"Detail" }}" class="btn {{ $room->name!=""?"btn-success":"btn-danger" }}">
                                             </form>
                                         </li>
@@ -66,7 +67,7 @@
                                         <tr>
                                             <th><h5>Booking Price</h5></th>
                                             <td>:</td>
-                                            <td><h5>Rp. {{ number_format($room->price!=""?$room->price:0) }},-</h5></td>
+                                            <td><h5>Rp. {{ $room->price!=""?number_format($room->price,0,'','.'):0 }},-</h5></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -82,6 +83,7 @@
                                             <form class="form-book">
                                                 <input type="hidden" class="id" value="{{ $room->id }}">
                                                 <input type="hidden" class="type" value="{{ $room->type }}">
+                                                <input type="hidden" class="price" value="{{ $room->price }}">
                                                 <input type="submit" value="Book" class="btn {{ $room->name!=""?"btn-success":"btn-danger" }}">
                                             </form>
                                         </li>
@@ -108,7 +110,7 @@
                                         <tr>
                                             <th><h5>Booking Price</h5></th>
                                             <td>:</td>
-                                            <td><h5>Rp. {{ number_format($room->price!=""?$room->price:0) }},-</h5></td>
+                                            <td><h5>Rp. {{ $room->price!=""?number_format($room->price,0,'','.'):0 }},-</h5></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -192,7 +194,8 @@
             e.preventDefault();
             $('#myModalTitle').html('Booking ' + $(this).children('.type').val() + ' Detail');
             $('.roomId').val($(this).children('.id').val());
-            $('.roomType').val($(this).children('.Type').val());
+            $('.roomType').val($(this).children('.type').val());
+            $('.modal-book').find('#price').val($(this).children('.price').val());
             $('.modal-book').show();
         });
 
@@ -206,12 +209,22 @@
             $.each($items,function(index, value){
                 $item = $item + '<option value="'+value.name+'">'+value.name+'</option>';
             });
-            $('.add-item').append('<div class="item form-group"><div class="col-md-6 col-sm-offset-3"><select class="form-control itemName" name="itemName">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" class="form-control col-md-7 col-xs-12 itemQuantity" name="itemQuantity" value="0"></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"></div></div>');
         });
 
         $(document).on('change','.itemName',function(){
-            if($(this).val() == 'other')
-               $(this).parent().parent().find('.add-other').append('<div class="col-md-8 col-sm-offset-3 validate"><input type="text" id="itemOther" class="form-control col-md-7 col-xs-12 itemOther" name="itemOther" placeholder="Item Name..."></div><div class="col-sm-1 validate"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div>');
+            $item = '';
+            $.each($items,function(index, value){
+                if($('.itemName').val() == value.name)
+                    $('.itemPrice').val(value.price);
+            });
+
+            if($(this).val() == 'other') {
+                $(this).parent().parent().find('.add-other').append('<div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther" placeholder="Item Name..."></div>');
+                $('.itemPrice').val("");
+            }
+            else
+                $(this).parent().parent().find('.add-other').children().remove();
         });
 
         $(document).on('click','.btn-minus',function(){

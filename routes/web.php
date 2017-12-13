@@ -11,30 +11,40 @@
 |
 */
 
-Route::get('/', function () {
-    return view('login');
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/', function () {
+        return view('login');
+    });
+
+    Route::post('doLogin', 'Auth\LoginController@login');
 });
 
-Route::get('home', 'HomeController@view');
+Route::group(['middleware' => 'auth'], function () {
+    //Home
+    Route::get('home', 'HomeController@view');
+    Route::post('book', 'HomeController@book');
 
-Route::get('room', function () {
-    return view('room');
+    // Room
+    Route::get('room', 'RoomController@view');
+    Route::post('createRoom', 'RoomController@create');
+    Route::post('updateRoom', 'RoomController@update');
+    Route::get('deleteRoom/{id}', 'RoomController@delete');
+
+    // Item
+    Route::get('item', 'ItemController@view');
+    Route::post('createItem', 'ItemController@create');
+    Route::post('updateItem', 'ItemController@update');
+    Route::get('deleteItem/{id}', 'ItemController@delete');
+
+    // Employee
+    Route::get('employee', 'EmployeeController@view');
+    Route::post('createEmployee', 'EmployeeController@create');
+    Route::post('updateEmployee', 'EmployeeController@update');
+    Route::get('deleteEmployee/{id}', 'EmployeeController@delete');
+
+    Route::get('report', function () {
+        return view('report');
+    });
+
+    Route::get('doLogout', 'Auth\LoginController@logout');
 });
-
-Route::get('item', function () {
-    return view('item');
-});
-
-Route::get('report', function () {
-    return view('report');
-});
-
-Route::get('employee', function () {
-    return view('employee');
-});
-
-Route::post('createEmployee', 'EmployeeController@create');
-Route::post('createItem', 'ItemController@create');
-Route::post('createRoom', 'RoomController@create');
-
-
