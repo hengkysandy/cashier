@@ -20,14 +20,38 @@ class HomeController extends Controller
 
     public function createBooking(Request $request)
     {
-    	//ada attr start end time (tipe data : timestamps)
+    	$times = explode(" - ", $request->date);
+
+		$hours = [];
+		$timeDetail = [];
+		foreach($times as $time) {
+			$detail = explode(" ", $time);
+			$calculateTime = 0;
+			$realTime = "";
+			if($detail[2] == 'PM') {
+				$calculateTime = (int)explode(":",$detail[1])[0] + 12;
+				$realTime = (string)$calculateTime.":00:00";
+			} else {
+				$calculateTime = (int)explode(":",$detail[1])[0];
+				$realTime = (string)$calculateTime.":00:00";
+			}
+
+			$dates = explode("/",$detail[0]);
+			$formatedDate = $dates[2]."-".$dates[0]."-".$dates[1];
+
+			array_push($hours, $calculateTime);
+			array_push($timeDetail, [$formatedDate ,$realTime]);
+		}
+
     	$transaction = Transaction::create([
     		'room_id' => $request->roomId,
     		'room_price' => $request->price,
     		'employee_id' => session()->get('userSession')->id,
     		'customer_name' => $request->name,
     		'customer_phone' => $request->phone,
-    		'booking_hour' => $request->hour,
+    		'booking_hour' => $hours[0] > $hours[1] ? $hours[0] - $hours[1] : $hours[1] - $hours[0],
+			'start_time' => $timeDetail[0][0]." ".$timeDetail[0][1],
+			'end_time' => $timeDetail[1][0]." ".$timeDetail[1][1],
     		'status' => 'On Going'
     	]);
 

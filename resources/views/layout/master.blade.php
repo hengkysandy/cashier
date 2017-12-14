@@ -30,6 +30,9 @@
     <!-- bootstrap-daterangepicker -->
     <link href="{{ asset('css/vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
 
+    <!-- bootstrap-datetimepicker -->
+    <link href="{{ asset('css/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css') }}" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="{{ asset('css/build/css/custom.min.css') }}" rel="stylesheet">
 
@@ -105,6 +108,9 @@
     <!-- bootstrap-daterangepicker -->
     <script src="{{ asset('css/vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('css/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
+    <!-- bootstrap-datetimepicker -->
+    <script src="{{ asset('css/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('css/build/js/custom.min.js') }}"></script>
