@@ -13,4 +13,8 @@ class Room extends Model
     	'price',
     	'type',
     ];
+
+    public function Transaction(){
+    	return $this->hasMany(Transaction::class,'room_id','id');
+    }
 }

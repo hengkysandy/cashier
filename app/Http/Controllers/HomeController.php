@@ -7,15 +7,16 @@ use App\Room;
 use App\Transaction;
 use App\TransactionDetail;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
     public function view()
     {
-        $rooms = Room::all();
-        $transactions = Transaction::all();
-        $items = Item::all();
-        return view('Home',compact('rooms','transactions', 'items'));
+        $data['rooms'] = Room::all();
+        $data['items'] = Item::all();
+        $data['time']= Carbon::now();
+        return view('Home',$data);
     }
 
     public function createBooking(Request $request)

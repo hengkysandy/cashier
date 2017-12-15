@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $table = 'transaction';
-
+    
     protected $fillable = [
     	'room_id',
     	'room_price',

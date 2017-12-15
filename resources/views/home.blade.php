@@ -37,12 +37,24 @@
                                     <h2>{{ $room->name }}</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
+                                            @foreach($room->Transaction as $transaction)
+                                                @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('H') >= explode(":",explode(" ",$transaction->start_time)[1])[0] && $time->format('H') <= explode(":",explode(" ",$transaction->end_time)[1])[0]))
+                                                    <form class="form-book">
+                                                        <input type="hidden" class="id" value="{{ $room->id }}">
+                                                        <input type="hidden" class="type" value="{{ $room->type }}">
+                                                        <input type="hidden" class="price" value="{{ $room->price }}">
+                                                        <input type="submit" value="On Going" class="btn btn-danger">
+                                                    </form>
+                                                @endif
+                                            @endforeach
+                                        </li>
+                                        <li>
                                             <form class="form-book">
                                                 <input type="hidden" class="id" value="{{ $room->id }}">
                                                 <input type="hidden" class="type" value="{{ $room->type }}">
                                                 <input type="hidden" class="price" value="{{ $room->price }}">
-                                                <input type="submit" value="{{ $room->name!=""?"Book":"Detail" }}" class="btn {{ $room->name!=""?"btn-success":"btn-danger" }}">
-                                            </form>
+                                                <input type="submit" value="Book" class="btn btn-success">
+                                            </form>     
                                         </li>
                                     </ul>
                                     <div class="clearfix"></div>
@@ -52,17 +64,62 @@
                                         <tr>
                                             <th><h5>Booking Name</h5></th>
                                             <td>:</td>
-                                            <td><h5>{{ $room->name!=""?$room->name:"-" }}</h5></td>
+                                            <td>
+                                                <h5>
+                                                    @if(count($room->Transaction)==0)
+                                                        -
+                                                    @else
+                                                        @foreach($room->Transaction as $transaction)
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('H') >= explode(":",explode(" ",$transaction->start_time)[1])[0] && $time->format('H') <= explode(":",explode(" ",$transaction->end_time)[1])[0]))
+                                                                {{ $transaction->customer_name }}
+                                                                @break
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </h5>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th><h5>Booking Hour</h5></th>
                                             <td>:</td>
-                                            <td><h5>{{ $room->name!=""?$room->name:"-" }}</h5></td>
+                                            <td>
+                                                <h5>
+                                                    @if(count($room->Transaction)==0)
+                                                        -
+                                                    @else
+                                                        @foreach($room->Transaction as $transaction)
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('H') >= explode(":",explode(" ",$transaction->start_time)[1])[0] && $time->format('H') <= explode(":",explode(" ",$transaction->end_time)[1])[0]))
+                                                                {{ $transaction->booking_hour }}
+                                                                @break
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </h5>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th><h5>Booking Date</h5></th>
                                             <td>:</td>
-                                            <td><h5>{{ $room->name!=""?$room->name:"-" }}</h5></td>
+                                            <td>
+                                                <h5>
+                                                    @if(count($room->Transaction)==0)
+                                                        -
+                                                    @else
+                                                        @foreach($room->Transaction as $transaction)
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('H') >= explode(":",explode(" ",$transaction->start_time)[1])[0] && $time->format('H') <= explode(":",explode(" ",$transaction->end_time)[1])[0]))
+                                                                {{ $transaction->start_time }}
+                                                                @break
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </h5>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th><h5>Booking Price</h5></th>
