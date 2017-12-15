@@ -33,9 +33,10 @@
 
                     <div class="x_content">
                         <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action">
+                            <table id="datatable" class="table table-striped jambo_table bulk_action">
                                 <thead>
                                     <tr class="headings">
+                                        <th style="display: none">room id </th>
                                         <th class="column-title">Room Name </th>
                                         <th class="column-title">Room Price </th>
                                         <th class="column-title">Room Type </th>

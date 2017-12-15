@@ -403,11 +403,11 @@
                                 url: '/getItem/'+value["item_id"],
                                 type: 'GET',
                                 success: function(responseItem){
-                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>'+ responseItem["item"]["price"] +'</td><td>'+ value["quantity"] +'</td></tr>');
+                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +'</td><td>'+ value["quantity"] +' pcs</td></tr>');
                                 }
                             });
                         } else {
-                            $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ value["other_item_name"] +'</td><td>'+ value["other_item_price"] +'</td><td>'+ value["quantity"] +'</td></tr>');
+                            $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ value["other_item_name"] +'</td><td>Rp. '+ value["other_item_price"] +'</td><td>'+ value["quantity"] +' pcs</td></tr>');
                         }
                     });
                 } 

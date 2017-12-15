@@ -83,6 +83,7 @@ class HomeController extends Controller
 
     public function getTransaction($id){
     	$data['transaction'] = Transaction::find($id);
+    	$data['employee_name'] = $data['transaction']->Employee->name;
     	$data['transactionDetail'] = TransactionDetail::where('id_transaction','=',$id)->get();
     	return $data;
     }

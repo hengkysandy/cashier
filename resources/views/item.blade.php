@@ -35,9 +35,10 @@
 
                     <div class="x_content">
                         <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action">
+                            <table id="datatable" class="table table-striped jambo_table bulk_action">
                                 <thead>
                                     <tr class="headings">
+                                        <th style="display: none">item id </th>
                                         <th class="column-title">Item Name </th>
                                         <th class="column-title">Item Price </th>
                                         <th class="column-title">Item Stock </th>

@@ -45,9 +45,9 @@ Route::group(['middleware' => 'checkUser'], function () {
     Route::post('updateEmployee', 'EmployeeController@update');
     Route::get('deleteEmployee/{id}', 'EmployeeController@delete');
 
-    Route::get('report', function () {
-        return view('report');
-    });
+    //Report
+    Route::get('report', 'ReportController@view');
+    Route::post('filterReport', 'ReportController@filterReport');
 
     Route::get('logoutUser', 'EmployeeController@logoutUser');
 });

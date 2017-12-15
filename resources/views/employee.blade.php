@@ -33,9 +33,10 @@
 
                     <div class="x_content">
                         <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action">
+                            <table id="datatable" class="table table-striped jambo_table bulk_action">
                                 <thead>
                                 <tr class="headings">
+                                    <th style="display: none">employee id </th>
                                     <th class="column-title">Employee Name </th>
                                     <th class="column-title">Employee Email </th>
                                     <th class="column-title">Employee Role </th>
