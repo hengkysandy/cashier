@@ -24,7 +24,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <li>
                                 <form class="form-new-room">
-                                    <input type="submit" value="New Room" class="btn btn-success">
+                                    <input type="submit" value="New Room" class="btn btn-success" disabled="">
                                 </form>
                             </li>
                         </ul>
@@ -142,6 +142,8 @@
 
 @section('script')
     <script>
+        $(".form-new-room").find('input[type=submit]').removeAttr('disabled');
+
         $('.form-new-room').submit(function(e){
             e.preventDefault();
             $('.modal-add-room').find('#myModalTitle').html("Add Room");

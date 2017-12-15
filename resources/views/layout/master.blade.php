@@ -43,7 +43,7 @@
 
     @yield('style')
 </head>
-<body class="nav-md">
+<body class="nav-md" onload=@yield('load')>
     <div class="container body">
         <div class="main_container">
 

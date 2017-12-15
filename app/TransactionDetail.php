@@ -16,4 +16,8 @@ class TransactionDetail extends Model
     	'other_item_price',
     	'quantity',
    	];
+
+   	public function Item(){
+   		return $this->belongsTo(Item::class,'item_id','id');
+   	}
 }

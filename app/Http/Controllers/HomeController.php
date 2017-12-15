@@ -80,4 +80,15 @@ class HomeController extends Controller
 
     	return back();
     }
+
+    public function getTransaction($id){
+    	$data['transaction'] = Transaction::find($id);
+    	$data['transactionDetail'] = TransactionDetail::where('id_transaction','=',$id)->get();
+    	return $data;
+    }
+
+    public function getItem($id){
+    	$data['item'] = Item::find($id);
+    	return $data;
+    }
 }

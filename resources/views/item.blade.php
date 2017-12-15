@@ -25,7 +25,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <li>
                                 <form class="form-new-item">
-                                    <input type="submit" value="New Item" class="btn btn-success">
+                                    <input type="submit" value="New Item" class="btn btn-success" disabled="">
                                 </form>
                             </li>
                         </ul>
@@ -146,6 +146,8 @@
 
 @section('script')
     <script>
+        $(".form-new-item").find('input[type=submit]').removeAttr('disabled');
+
         $('.form-new-item').submit(function(e){
             e.preventDefault();
             $('.modal-add-item').find('#myModalTitle').html("Add Item");

@@ -19,4 +19,8 @@ class Transaction extends Model
         'end_time',
     	'status',
     ];
+
+    public function TransactionDetail(){
+        return $this->hasMany(TransactionDetail::class,'transaction_id','id');
+    }
 }
