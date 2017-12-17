@@ -377,11 +377,31 @@
             </div>
         </div>
     </div>
+
+    @if(count($errors) > 0)
+        <div class="checkError"></div>
+    @endif
 @endsection
 
 @section('script')
     <script>
         $items = <?php echo $items?>;
+        $transaction = <?php echo $print==''?"false":$print?>;
+
+        $(document).ready(function(){
+           if($('.checkError').length!=0){
+               new PNotify({
+                   title: 'Failed Booking',
+                   text: 'Booking Date Has Booked Please Choose Another Date !!!',
+                   type: 'error',
+                   styling: 'bootstrap3'
+               });
+           }
+
+           if($transaction!="false"){
+               window.open('printTransaction/'+$transaction["id"]);
+           }
+        });
 
         $(".form-going").submit(function(e){
             e.preventDefault();
@@ -398,16 +418,23 @@
                     $('.going_price').val(response["transaction"]["room_price"]);
 
                     $.each(response["transactionDetail"], function(index, value){
-                        if(value["item_id"]!=""){
+                        if(value["item_id"]!=null){
                             $.ajax({
                                 url: '/getItem/'+value["item_id"],
                                 type: 'GET',
                                 success: function(responseItem){
-                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +'</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
                                 }
                             });
                         } else {
-                            $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ value["other_item_name"] +'</td><td>Rp. '+ value["other_item_price"] +'</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                            $.ajax({
+                                url: '/getDetailTransaction/'+value["id"],
+                                type: 'GET',
+                                success: function(responseItem){
+                                    console.log(responseItem);
+                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                }
+                            });
                         }
                     });
                 } 
@@ -416,6 +443,7 @@
         });
 
         $(".form-book").find('input[type=submit]').removeAttr('disabled');
+        $(".form-going").find('input[type=submit]').removeAttr('disabled');
 
         $(".form-book").submit(function(e){
             e.preventDefault();

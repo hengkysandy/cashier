@@ -38,6 +38,13 @@ class EmployeeController extends Controller
 
     public function create(Request $request)
     {
+		$employees = Employee::all();
+
+		foreach($employees as $employee){
+			if($employee->name == $request->name)
+				return redirect()->back()->withErrors('');
+		}
+
     	Employee::create([
     		'role_id' => 2, //staff
     		'email' => $request->email,

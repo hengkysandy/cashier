@@ -145,10 +145,25 @@
             </div>
         </div>
     </div>
+
+    @if(count($errors) > 0)
+        <div class="checkError"></div>
+    @endif
 @endsection
 
 @section('script')
     <script>
+        $(document).ready(function(){
+            if($('.checkError').length!=0){
+                new PNotify({
+                    title: 'Failed Insert Employee',
+                    text: 'Username Already Exists Please Change!!!',
+                    type: 'error',
+                    styling: 'bootstrap3'
+                });
+            }
+        });
+
         $(".form-new-employee").find('input[type=submit]').removeAttr('disabled');
 
         $('.form-new-employee').submit(function(e){

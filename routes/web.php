@@ -25,7 +25,9 @@ Route::group(['middleware' => 'checkUser'], function () {
     Route::get('home', 'HomeController@view');
     Route::post('createBooking', 'HomeController@createBooking');
     Route::get('getTransaction/{id}', 'HomeController@getTransaction');
+    Route::get('getDetailTransaction/{id}', 'HomeController@getDetailTransaction');
     Route::get('getItem/{id}', 'HomeController@getItem');
+    Route::get('printTransaction/{id}', 'HomeController@printTransaction');
 
     // Room
     Route::get('room', 'RoomController@view');

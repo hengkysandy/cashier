@@ -16,6 +16,7 @@ class HomeController extends Controller
         $data['rooms'] = Room::all();
         $data['items'] = Item::all();
         $data['time']= Carbon::now();
+		$data['print'] = '';
         return view('Home',$data);
     }
 
@@ -42,6 +43,21 @@ class HomeController extends Controller
 
 			array_push($hours, $calculateTime);
 			array_push($timeDetail, [$formatedDate ,$realTime]);
+		}
+
+		$allTransaction = Transaction::all();
+
+		foreach($allTransaction as $transaction){
+			if($transaction->room_id == $request->roomId && $transaction->start_time->format("Y-m-d") == $timeDetail[0][0]){
+				if($transaction->start_time->format('H')<$hours[0] && $transaction->end_time->format('H')>$hours[0])
+					return redirect()->back()->withErrors('');
+
+				if($transaction->start_time->format('H')<$hours[1] && $transaction->end_time->format('H')>$hours[1])
+					return redirect()->back()->withErrors('');
+
+				if($transaction->start_time->format('H')>=$hours[0] && $transaction->end_time->format('H')<=$hours[1])
+					return redirect()->back()->withErrors('');
+			}
 		}
 
     	$transaction = Transaction::create([
@@ -78,7 +94,11 @@ class HomeController extends Controller
 			}
     	}
 
-    	return back();
+		$data['rooms'] = Room::all();
+		$data['items'] = Item::all();
+		$data['time']= Carbon::now();
+		$data['print'] = $transaction;
+		return view('Home',$data);
     }
 
     public function getTransaction($id){
@@ -88,8 +108,18 @@ class HomeController extends Controller
     	return $data;
     }
 
+	public function getDetailTransaction($id){
+		$data['transactionDetail'] = TransactionDetail::find($id);
+		return $data;
+	}
+
     public function getItem($id){
     	$data['item'] = Item::find($id);
     	return $data;
     }
+
+	public function printTransaction($id){
+		$data['transaction'] = Transaction::find($id);
+		return view('print', $data);
+	}
 }

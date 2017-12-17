@@ -92,7 +92,7 @@
                                         <td class=" ">{{$data->start_time->format('m')}}</td>
                                         <td class=" ">{{$data->id}}</td>
                                         <td class=" ">{{$data->Room->name}}</td>
-                                        <td class=" ">Rp {{number_format($data->room_price)}}</td>
+                                        <td class=" ">Rp {{number_format($data->room_price,0,'','.')}},-</td>
                                         <td class=" ">{{$data->customer_name}}</td>
                                         <td class=" ">{{$data->customer_phone}}</td>
                                         <td class=" ">{{$data->start_time->format('Y-m-d')}}</td>
@@ -143,12 +143,12 @@
                             <div class="col-md-10 col-sm-9 col-xs-12 col-md-offset-1">
                                 <table class="table table-striped">
                                     <thead>
-                                        <th>#</th>
+                                        <th>No.</th>
                                         <th>Item Name</th>
                                         <th>Item Price</th>
                                         <th>Quantity</th>
                                     </thead>
-                                    <tbody id="report-tbody">
+                                    <tbody class="report-tbody">
                                         
                                     </tbody>
                                 </table>
@@ -195,23 +195,30 @@
                 $('#no-transaction').html( $(this).val() );
 
 
-                $('#report-tbody').empty();
+                $('.report-tbody tr').remove();
                 $.ajax({
                     url: '/getTransaction/'+$(this).val(),
                     type: 'GET',
                     success: function(response){
                         $('#employee').html(response["employee_name"]);
                         $.each(response["transactionDetail"], function(index, value){
-                            if(value["item_id"]!=""){
+                            if(value["item_id"]!=null){
                                 $.ajax({
                                     url: '/getItem/'+value["item_id"],
                                     type: 'GET',
                                     success: function(responseItem){
-                                        $('#report-tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +'</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                        $('.report-tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
                                     }
                                 });
                             } else {
-                                $('.report-tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ value["other_item_name"] +'</td><td>Rp. '+ value["other_item_price"] +'</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                $.ajax({
+                                    url: '/getDetailTransaction/'+value["id"],
+                                    type: 'GET',
+                                    success: function(responseItem){
+                                        console.log(responseItem);
+                                        $('.report-tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                    }
+                                });
                             }
                         });
                     } 
