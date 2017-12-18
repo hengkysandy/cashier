@@ -398,7 +398,7 @@
                });
            }
 
-           if($transaction!="false"){
+           if($transaction!=false){
                window.open('printTransaction/'+$transaction["id"]);
            }
         });
