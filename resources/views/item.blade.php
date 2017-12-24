@@ -42,7 +42,6 @@
                                         <th class="column-title">Item Name </th>
                                         <th class="column-title">Item Price </th>
                                         <th class="column-title">Item Stock </th>
-                                        <th class="column-title">Item Status </th>
                                         @if( session()->get('userSession')->role_id == 1 )
                                         <th class="column-title no-link last">
                                             <span class="nobr">Action</span>
@@ -57,7 +56,6 @@
                                             <td class="item_name">{{ $item->name }}</td>
                                             <td class="item_price">Rp. {{ number_format($item->price,0,'','.') }},- </td>
                                             <td class="item_stock">{{ $item->stock }}</td>
-                                            <td class="item_status">{{ $item->status }}</td>
                                             @if( session()->get('userSession')->role_id == 1 )
                                                 <td class=" last">
                                                 <button type="button" class="btn btn-primary btn-xs btn-update-item">Update</button>

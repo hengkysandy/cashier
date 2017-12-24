@@ -46,7 +46,7 @@ class EmployeeController extends Controller
 		}
 
     	Employee::create([
-    		'role_id' => 2, //staff
+    		'role_id' => $request->role,
     		'email' => $request->email,
     		'name' => $request->name,
     		'password' => $request->password,

@@ -40,7 +40,6 @@
                                         <th class="column-title">Room Name </th>
                                         <th class="column-title">Room Price </th>
                                         <th class="column-title">Room Type </th>
-                                        <th class="column-title">Room Status </th>
                                         <th class="column-title no-link last">
                                             <span class="nobr">Action</span>
                                         </th>
@@ -53,7 +52,6 @@
                                             <td class="room_name">{{ $room->name }}</td>
                                             <td class="room_price">Rp. {{ number_format($room->price,0,'','.') }},- </td>
                                             <td class="room_type">{{ $room->type }}</td>
-                                            <td class=" ">Book</td>
                                             <td class=" last">
                                                 <button type="button" class="btn btn-primary btn-xs btn-update-room">Update</button>
                                                 <button type="button" class="btn btn-danger btn-xs btn-delete-room">Delete</button>

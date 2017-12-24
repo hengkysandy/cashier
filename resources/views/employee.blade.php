@@ -40,7 +40,6 @@
                                     <th class="column-title">Employee Name </th>
                                     <th class="column-title">Employee Email </th>
                                     <th class="column-title">Employee Role </th>
-                                    <th class="column-title">Employee Status </th>
                                     <th class="column-title no-link last">
                                         <span class="nobr">Action</span>
                                     </th>
@@ -53,7 +52,6 @@
                                         <td class="employee_name">{{ $employee->name }}</td>
                                         <td class="employee_email">{{ $employee->email }}</td>
                                         <td class="employee_role">{{ $employee->Role->name }}</td>
-                                        <td class="employee_status">{{ $employee->status }}</td>
                                         <td class=" last">
                                             <button type="button" class="btn btn-primary btn-xs btn-update-employee">Update</button>
                                             <button type="button" class="btn btn-danger btn-xs btn-delete-employee">Delete</button>
@@ -86,7 +84,8 @@
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <select name="role" class="form-control">
-                                    <option value="Staff">Staff</option>
+                                    <option value="1">Manager</option>
+                                    <option value="2">Staff</option>
                                 </select>
                             </div>
                         </div>
