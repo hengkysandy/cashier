@@ -13,7 +13,10 @@
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/', function () {
-        return view('login');
+        if(empty(session()->get('userSession')->id))
+            return view('login');
+        else
+            return redirect('/home');
     });
 
     // Route::post('doLogin', 'Auth\LoginController@login');
@@ -24,6 +27,8 @@ Route::group(['middleware' => 'checkUser'], function () {
     //Home
     Route::get('home', 'HomeController@view');
     Route::post('createBooking', 'HomeController@createBooking');
+    Route::get('updateStatus/{id}', 'HomeController@updateStatus');
+    Route::post('updateTransaction','HomeController@updateTransaction');
     Route::get('getTransaction/{id}', 'HomeController@getTransaction');
     Route::get('getDetailTransaction/{id}', 'HomeController@getDetailTransaction');
     Route::get('getItem/{id}', 'HomeController@getItem');

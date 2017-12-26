@@ -97,14 +97,14 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Item Price <span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Item Price...">
+                                <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Item Price..." min="0">
                             </div>
                         </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Item Stock<span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="number" id="stock" class="form-control col-md-7 col-xs-12" name="stock" placeholder="Item Stock...">
+                                <input type="number" id="stock" class="form-control col-md-7 col-xs-12" name="stock" placeholder="Item Stock..." min="0">
                             </div>
                         </div>
                         <div class="ln_solid"></div>

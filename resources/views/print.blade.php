@@ -37,23 +37,23 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            <label class="col-md-5">Booking Name</label>
+                            <label class="col-md-5">Customer Name</label>
                             <div class="col-md-2">:</div>
                             <div class="col-md-5">{{ $transaction->customer_name }}</div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            <label class="col-md-5">Booking Phone</label>
+                            <label class="col-md-5">Customer Phone</label>
                             <div class="col-md-2">:</div>
                             <div class="col-md-5">{{ $transaction->customer_phone }}</div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            <label class="col-md-5">Booking Date</label>
+                            <label class="col-md-5">Booking Time</label>
                             <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->start_time->format('d-m-Y') }}</div>
+                            <div class="col-md-5">{{ $transaction->created_at->format('i') }}</div>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -98,6 +98,9 @@
                     <h6>Thanks from CS : {{ $transaction->Employee->name }}</h6>
                     <h5>Copyright &copy; Cashier - 2017</h5>
                 </div>
+            </div>
+            <div class="col-md-2 col-md-offset-2">
+                <button type="button" class="btn btn-primary fa fa-download" onclick="window.print()"> Print</button>
             </div>
         </div>
     </div>

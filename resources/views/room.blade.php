@@ -100,7 +100,7 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Room Price <span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Room Price...">
+                                <input type="number" id="price" class="form-control col-md-7 col-xs-12" name="price" placeholder="Room Price..." min="0">
                             </div>
                         </div>
                         <div class="ln_solid"></div>

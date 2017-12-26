@@ -13,52 +13,55 @@ class HomeController extends Controller
 {
     public function view()
     {
-        $data['rooms'] = Room::all();
-        $data['items'] = Item::all();
-        $data['time']= Carbon::now();
-		$data['print'] = '';
-        return view('Home',$data);
+		if(session()->get('userSession')->id != "") {
+			$data['rooms'] = Room::all();
+			$data['items'] = Item::all();
+			$data['time'] = Carbon::now();
+			return view('Home', $data);
+		} else {
+			return redirect('/');
+		}
     }
 
     public function createBooking(Request $request)
     {
     	$times = explode(" - ", $request->date);
 
-		$hours = [];
-		$timeDetail = [];
-		foreach($times as $time) {
-			$detail = explode(" ", $time);
-			$calculateTime = 0;
-			$realTime = "";
-			if($detail[2] == 'PM') {
-				$calculateTime = (int)explode(":",$detail[1])[0] + 12;
-				$realTime = (string)$calculateTime.":00:00";
-			} else {
-				$calculateTime = (int)explode(":",$detail[1])[0];
-				$realTime = (string)$calculateTime.":00:00";
-			}
-
-			$dates = explode("/",$detail[0]);
-			$formatedDate = $dates[2]."-".$dates[0]."-".$dates[1];
-
-			array_push($hours, $calculateTime);
-			array_push($timeDetail, [$formatedDate ,$realTime]);
-		}
-
-		$allTransaction = Transaction::all();
-
-		foreach($allTransaction as $transaction){
-			if($transaction->room_id == $request->roomId && $transaction->start_time->format("Y-m-d") == $timeDetail[0][0]){
-				if($transaction->start_time->format('H')<$hours[0] && $transaction->end_time->format('H')>$hours[0])
-					return redirect()->back()->withErrors('');
-
-				if($transaction->start_time->format('H')<$hours[1] && $transaction->end_time->format('H')>$hours[1])
-					return redirect()->back()->withErrors('');
-
-				if($transaction->start_time->format('H')>=$hours[0] && $transaction->end_time->format('H')<=$hours[1])
-					return redirect()->back()->withErrors('');
-			}
-		}
+//		$hours = [];
+//		$timeDetail = [];
+//		foreach($times as $time) {
+//			$detail = explode(" ", $time);
+//			$calculateTime = 0;
+//			$realTime = "";
+//			if($detail[2] == 'PM') {
+//				$calculateTime = (int)explode(":",$detail[1])[0] + 12;
+//				$realTime = (string)$calculateTime.":00:00";
+//			} else {
+//				$calculateTime = (int)explode(":",$detail[1])[0];
+//				$realTime = (string)$calculateTime.":00:00";
+//			}
+//
+//			$dates = explode("/",$detail[0]);
+//			$formatedDate = $dates[2]."-".$dates[0]."-".$dates[1];
+//
+//			array_push($hours, $calculateTime);
+//			array_push($timeDetail, [$formatedDate ,$realTime]);
+//		}
+//
+//		$allTransaction = Transaction::all();
+//
+//		foreach($allTransaction as $transaction){
+//			if($transaction->room_id == $request->roomId && $transaction->start_time->format("Y-m-d") == $timeDetail[0][0]){
+//				if($transaction->start_time->format('H')<$hours[0] && $transaction->end_time->format('H')>$hours[0])
+//					return redirect()->back()->withErrors('');
+//
+//				if($transaction->start_time->format('H')<$hours[1] && $transaction->end_time->format('H')>$hours[1])
+//					return redirect()->back()->withErrors('');
+//
+//				if($transaction->start_time->format('H')>=$hours[0] && $transaction->end_time->format('H')<=$hours[1])
+//					return redirect()->back()->withErrors('');
+//			}
+//		}
 
     	$transaction = Transaction::create([
     		'room_id' => $request->roomId,
@@ -66,40 +69,79 @@ class HomeController extends Controller
     		'employee_id' => session()->get('userSession')->id,
     		'customer_name' => $request->name,
     		'customer_phone' => $request->phone,
-    		'booking_hour' => $hours[0] > $hours[1] ? $hours[0] - $hours[1] : $hours[1] - $hours[0],
-			'start_time' => $timeDetail[0][0]." ".$timeDetail[0][1],
-			'end_time' => $timeDetail[1][0]." ".$timeDetail[1][1],
+    		'booking_hour' => $request->hour,
     		'status' => 'On Going'
     	]);
 
-    	foreach($request->itemName as $index => $id){
-    		if($id == "other"){
+		if(count($request->itemName)>0) {
+			foreach ($request->itemName as $index => $id) {
+				if ($id == "other") {
+					TransactionDetail::create([
+						'id_transaction' => $transaction->id,
+						'item_id' => NULL,
+						'item_price' => NULL,
+						'other_item_name' => $request->itemOther[$index],
+						'other_item_price' => $request->itemPrice[$index],
+						'quantity' => $request->itemQuantity[$index]
+					]);
+				} else {
+
+					$item = Item::find($id);
+					$item->stock = $item->stock - $request->itemQuantity[$index];
+					$item->save();
+
+					TransactionDetail::create([
+						'id_transaction' => $transaction->id,
+						'item_id' => $id,
+						'item_price' => $request->itemPrice[$index],
+						'other_item_name' => NULL,
+						'other_item_price' => NULL,
+						'quantity' => $request->itemQuantity[$index]
+					]);
+				}
+			}
+		}
+
+		return "success";
+    }
+
+	public function updateStatus($id){
+		$transaction = Transaction::find($id);
+		$transaction->status = "Finalize";
+		$transaction->save();
+		return back();
+	}
+
+	public function updateTransaction(Request $request){
+		foreach ($request->itemName as $index => $id) {
+			if ($id == "other") {
 				TransactionDetail::create([
-					'id_transaction' => $transaction->id,
+					'id_transaction' => $request->id,
 					'item_id' => NULL,
 					'item_price' => NULL,
 					'other_item_name' => $request->itemOther[$index],
 					'other_item_price' => $request->itemPrice[$index],
-					'quantity' => $request->itemQuantity[$index] 
+					'quantity' => $request->itemQuantity[$index]
 				]);
 			} else {
+
+				$item = Item::find($id);
+				$item->stock = $item->stock - $request->itemQuantity[$index];
+				$item->save();
+
 				TransactionDetail::create([
-					'id_transaction' => $transaction->id,
+					'id_transaction' => $request->id,
 					'item_id' => $id,
 					'item_price' => $request->itemPrice[$index],
 					'other_item_name' => NULL,
 					'other_item_price' => NULL,
-					'quantity' => $request->itemQuantity[$index] 
+					'quantity' => $request->itemQuantity[$index]
 				]);
 			}
-    	}
+		}
 
-		$data['rooms'] = Room::all();
-		$data['items'] = Item::all();
-		$data['time']= Carbon::now();
-		$data['print'] = $transaction;
-		return view('Home',$data);
-    }
+		return "success";
+	}
 
     public function getTransaction($id){
     	$data['transaction'] = Transaction::find($id);

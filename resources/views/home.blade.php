@@ -31,29 +31,42 @@
             <div class="row tab-content" id="myTabContent">
                 @foreach($rooms as $key => $room)
                     @if($room->type == 'Room')
+                        <?php $flag = 0; $id = 0; $status = ""; ?>
                         <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade active in tab_content1" role="tabpanel" aria-labelledby="room-tab">
-                            <div class="x_panel tile fixed_height_210">
+                            <div class="x_panel tile fixed_height_250">
                                 <div class="x_title" style="margin-bottom: 0px;">
                                     <h2>{{ $room->name }}</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
-                                            @foreach($room->Transaction as $transaction)
-                                                @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
-                                                    <form class="form-going">
-                                                        <input type="hidden" class="going_id" value="{{ $transaction->id }}">
-                                                        <input type="hidden" class="going_type" value="{{ $room->type }}">
-                                                        <input type="submit" value="On Going" class="btn btn-danger" disabled="">
+                                            @if(count($room->Transaction)==0)
+                                                <form class="form-book">
+                                                    <input type="hidden" class="id" value="{{ $room->id }}">
+                                                    <input type="hidden" class="type" value="{{ $room->type }}">
+                                                    <input type="hidden" class="price" value="{{ $room->price }}">
+                                                    <input type="submit" value="Book" class="btn btn-success" disabled="">
+                                                </form>
+                                            @else
+                                                @foreach($room->Transaction as $key => $transaction)
+                                                    @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
+                                                        <?php $id = $transaction->id; $status = $transaction->status; ?>
+                                                        <form class="form-going">
+                                                            <input type="hidden" class="going_id" value="{{ $transaction->id }}">
+                                                            <input type="hidden" class="going_type" value="{{ $room->type }}">
+                                                            <a href="printTransaction/{{ $transaction->id }}" target="_blank"><button type="button" class="btn btn-primary btn-print" disabled>Print</button></a>
+                                                            <input type="submit" value="Edit" class="btn btn-info" disabled="">
+                                                        </form>
+                                                        <?php $flag = 1; ?>
+                                                    @endif
+                                                @endforeach
+                                                @if($flag == 0)
+                                                    <form class="form-book">
+                                                        <input type="hidden" class="id" value="{{ $room->id }}">
+                                                        <input type="hidden" class="type" value="{{ $room->type }}">
+                                                        <input type="hidden" class="price" value="{{ $room->price }}">
+                                                        <input type="submit" value="Book" class="btn btn-success" disabled="">
                                                     </form>
                                                 @endif
-                                            @endforeach
-                                        </li>
-                                        <li>
-                                            <form class="form-book">
-                                                <input type="hidden" class="id" value="{{ $room->id }}">
-                                                <input type="hidden" class="type" value="{{ $room->type }}">
-                                                <input type="hidden" class="price" value="{{ $room->price }}">
-                                                <input type="submit" value="Book" class="btn btn-success" disabled="">
-                                            </form>     
+                                            @endif
                                         </li>
                                     </ul>
                                     <div class="clearfix"></div>
@@ -69,14 +82,15 @@
                                                         -
                                                     @else
                                                         @foreach($room->Transaction as $key => $transaction)
-                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
                                                                 {{ $transaction->customer_name }}
+                                                                <?php $flag = 1; ?>
                                                                 @break
                                                             @endif
-                                                            @if(count($room->Transaction)-1 == $key)
-                                                                -
-                                                            @endif
                                                         @endforeach
+                                                        @if($flag == 0)
+                                                            -
+                                                        @endif
                                                     @endif
                                                 </h5>
                                             </td>
@@ -90,14 +104,15 @@
                                                         -
                                                     @else
                                                         @foreach($room->Transaction as $key => $transaction)
-                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
                                                                 {{ $transaction->booking_hour }}
+                                                                <?php $flag = 1; ?>
                                                                 @break
                                                             @endif
-                                                            @if(count($room->Transaction)-1 == $key)
-                                                                -
-                                                            @endif
                                                         @endforeach
+                                                        @if($flag == 0)
+                                                            -
+                                                        @endif
                                                     @endif
                                                 </h5>
                                             </td>
@@ -111,14 +126,15 @@
                                                         -
                                                     @else
                                                         @foreach($room->Transaction as $key => $transaction)
-                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
-                                                                {{ $transaction->start_time }}
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
+                                                                {{ $transaction->created_at }}
+                                                                <?php $flag = 1; ?>
                                                                 @break
                                                             @endif
-                                                            @if(count($room->Transaction)-1 == $key)
-                                                                -
-                                                            @endif
                                                         @endforeach
+                                                        @if($flag == 0)
+                                                            -
+                                                        @endif
                                                     @endif
                                                 </h5>
                                             </td>
@@ -129,33 +145,51 @@
                                             <td><h5>Rp. {{ $room->price!=""?number_format($room->price,0,'','.'):0 }},-</h5></td>
                                         </tr>
                                     </table>
+                                    <form class="form-finalize-book">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="id" value="{{ $id }}" id="id">
+                                        <button type="submit" class="btn btn-danger col-md-4 col-md-offset-4 btn-finalize" style="visibility: {{ $flag == 1 && $status != "Finalize" && $status != "" ? "none":"hidden" }}; margin-bottom: 5%;" disabled>Finalize</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     @else
+                        <?php $flag = 0; $id = 0; $status = ""; ?>
                         <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade tab_content2" role="tabpanel" aria-labelledby="hall-tab">
-                            <div class="x_panel tile fixed_height_210">
+                            <div class="x_panel tile fixed_height_250">
                                 <div class="x_title" style="margin-bottom: 0px;">
                                     <h2>{{ $room->name }}</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
-                                            @foreach($room->Transaction as $transaction)
-                                                @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
-                                                    <form class="form-going">
-                                                        <input type="hidden" class="going_id" value="{{ $transaction->id }}">
-                                                        <input type="hidden" class="going_type" value="{{ $room->type }}">
-                                                        <input type="submit" value="On Going" class="btn btn-danger">
+                                            @if(count($room->Transaction)==0)
+                                                <form class="form-book">
+                                                    <input type="hidden" class="id" value="{{ $room->id }}">
+                                                    <input type="hidden" class="type" value="{{ $room->type }}">
+                                                    <input type="hidden" class="price" value="{{ $room->price == 0 || empty($room->price)? 0 : $room->price }}">
+                                                    <input type="submit" value="Book" class="btn btn-success">
+                                                </form>
+                                            @else
+                                                @foreach($room->Transaction as $transaction)
+                                                    @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
+                                                        <?php $id = $transaction->id; $status = $transaction->status; ?>
+                                                        <form class="form-going">
+                                                            <input type="hidden" class="going_id" value="{{ $transaction->id }}">
+                                                            <input type="hidden" class="going_type" value="{{ $room->type }}">
+                                                            <a href="printTransaction/{{ $transaction->id }}"><button type="button" class="btn btn-primary btn-print" disabled>Print</button></a>
+                                                            <input type="submit" value="On Going" class="btn btn-info">
+                                                        </form>
+                                                        <?php $flag = 1; ?>
+                                                    @endif
+                                                @endforeach
+                                                @if($flag == 0)
+                                                    <form class="form-book">
+                                                        <input type="hidden" class="id" value="{{ $room->id }}">
+                                                        <input type="hidden" class="type" value="{{ $room->type }}">
+                                                        <input type="hidden" class="price" value="{{ $room->price == 0 || empty($room->price)? 0 : $room->price }}">
+                                                        <input type="submit" value="Book" class="btn btn-success">
                                                     </form>
                                                 @endif
-                                            @endforeach
-                                        </li>
-                                        <li>
-                                            <form class="form-book">
-                                                <input type="hidden" class="id" value="{{ $room->id }}">
-                                                <input type="hidden" class="type" value="{{ $room->type }}">
-                                                <input type="hidden" class="price" value="{{ $room->price == 0 || empty($room->price)? 0 : $room->price }}">
-                                                <input type="submit" value="Book" class="btn btn-success">
-                                            </form>     
+                                            @endif
                                         </li>
                                     </ul>
                                     <div class="clearfix"></div>
@@ -171,14 +205,15 @@
                                                         -
                                                     @else
                                                         @foreach($room->Transaction as $key => $transaction)
-                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
                                                                 {{ $transaction->customer_name }}
+                                                                <?php $flag = 1; ?>
                                                                 @break
                                                             @endif
-                                                            @if(count($room->Transaction)-1 == $key)
-                                                                -
-                                                            @endif
                                                         @endforeach
+                                                        @if($flag == 0)
+                                                            -
+                                                        @endif
                                                     @endif
                                                 </h5>
                                             </td>
@@ -192,14 +227,15 @@
                                                         -
                                                     @else
                                                         @foreach($room->Transaction as $key => $transaction)
-                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
                                                                 {{ $transaction->booking_hour }}
+                                                                <?php $flag = 1; ?>
                                                                 @break
                                                             @endif
-                                                            @if(count($room->Transaction)-1 == $key)
-                                                                -
-                                                            @endif
                                                         @endforeach
+                                                        @if($flag == 0)
+                                                            -
+                                                        @endif
                                                     @endif
                                                 </h5>
                                             </td>
@@ -213,14 +249,15 @@
                                                         -
                                                     @else
                                                         @foreach($room->Transaction as $key => $transaction)
-                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->start_time)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->start_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->end_time)[1])[0].explode(":",explode(" ",$transaction->end_time)[1])[1]))
-                                                                {{ $transaction->start_time }}
+                                                            @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
+                                                                {{ $transaction->created_at }}
+                                                                <?php $flag = 1; ?>
                                                                 @break
                                                             @endif
-                                                            @if(count($room->Transaction)-1 == $key)
-                                                                -
-                                                            @endif
                                                         @endforeach
+                                                        @if($flag == 0)
+                                                            -
+                                                        @endif
                                                     @endif
                                                 </h5>
                                             </td>
@@ -233,6 +270,11 @@
                                     </table>
                                 </div>
                             </div>
+                            <form class="form-finalize-book">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ $id }}" id="id">
+                                <button type="submit" class="btn btn-danger col-md-4 col-md-offset-4 btn-finalize" style="visibility: {{ $flag == 1 && $status != "Finalize" && $status != "" ? "none":"hidden" }}; margin-bottom: 5%;" disabled>Finalize</button>
+                            </form>
                         </div>
                     @endif
                 @endforeach
@@ -251,7 +293,7 @@
                     <h4 class="modal-title" id="myModalTitle"></h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url('createBooking')}}" method="POST" class="form-horizontal form-label-left">
+                    <form class="form-horizontal form-label-left form-add-book">
                         {!! csrf_field() !!}
                         <input type="hidden" name="roomId" class="roomId" value="">
                         <input type="hidden" name="roomType" class="roomType" value="">
@@ -263,24 +305,18 @@
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Customer Phone <span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Customer Phone
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <input type="number" id="phone" class="form-control col-md-7 col-xs-12" name="phone" placeholder="Customer Phone...">
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Booking Date<span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Booking Hour<span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <div class="input-prepend input-group">
-                                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                            <input type="text" name="date" id="reservation-time" class="form-control" value="12/01/2017 - 01/01/2018" />
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="number" class="form-control col-md-7 col-xs-12 bookingHour" name="hour" placeholder="Booking Hour..." min="0">
+                                <input type="hidden" name="time" class="bookingHour">
                             </div>
                         </div>
                         <div class="item form-group">
@@ -322,14 +358,14 @@
                 <div class="modal-body">
                     <div class="form-horizontal form-label-left">
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Booking Name
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Customer Name
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <input type="text" class="form-control col-md-7 col-xs-12 going_name" name="name" disabled="">
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Booking Phone
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Customer Phone
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <input type="text" class="form-control col-md-7 col-xs-12 going_phone" name="phone" disabled="">
@@ -372,7 +408,46 @@
                                 </table>
                             </div>
                         </div>
+                        <hr>
+                        <form class="form-edit-book">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="id" class="going_id">
+                            <div class="edit-item">
+                            </div>
+                            <div class="item form-group">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-default btn-success btn-edit-item">Add Item</button>
+                                </div>
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <button type="reset" class="btn btn-default btn-close">Cancel</button>
+                                    <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal bs-example-modal-sm modal-confirmation-book" style="background-color: rgba(0, 0, 0, 0.5)">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close btn-no"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myConfirmationTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-confirmation-book">
+                        <input type="hidden" name="id" id="transaction_id">
+                        <div class="item form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-danger col-sm-offset-3">Yes</button>
+                                <button type="reset" class="btn btn-info btn-no col-sm-offset-1">No</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -386,9 +461,10 @@
 @section('script')
     <script>
         $items = <?php echo $items?>;
-        $transaction = <?php echo $print==''?"false":$print?>;
 
         $(document).ready(function(){
+           $('.btn-submit').hide();
+
            if($('.checkError').length!=0){
                new PNotify({
                    title: 'Failed Booking',
@@ -396,10 +472,6 @@
                    type: 'error',
                    styling: 'bootstrap3'
                });
-           }
-
-           if($transaction!=false){
-               window.open('printTransaction/'+$transaction["id"]);
            }
         });
 
@@ -411,9 +483,10 @@
                 url: '/getTransaction/'+$(this).children('.going_id').val(),
                 type: 'GET',
                 success: function(response){
+                    $('.going_id').val(response["transaction"]["id"]);
                     $('.going_name').val(response["transaction"]["customer_name"]);
                     $('.going_phone').val(response["transaction"]["customer_phone"]);
-                    $('.going_date').val(response["transaction"]["start_time"]+" - "+response["transaction"]["end_time"]);
+                    $('.going_date').val(response["transaction"]["created_at"]);
                     $('.going_hour').val(response["transaction"]["booking_hour"]);
                     $('.going_price').val(response["transaction"]["room_price"]);
 
@@ -431,7 +504,6 @@
                                 url: '/getDetailTransaction/'+value["id"],
                                 type: 'GET',
                                 success: function(responseItem){
-                                    console.log(responseItem);
                                     $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
                                 }
                             });
@@ -444,13 +516,14 @@
 
         $(".form-book").find('input[type=submit]').removeAttr('disabled');
         $(".form-going").find('input[type=submit]').removeAttr('disabled');
+        $(".btn-print").removeAttr('disabled');
+        $(".btn-finalize").removeAttr('disabled');
 
         $(".form-book").submit(function(e){
             e.preventDefault();
             $('#myModalTitle').html('Booking ' + $(this).children('.type').val() + ' Detail');
             $('.roomId').val($(this).children('.id').val());
             $('.roomType').val($(this).children('.type').val());
-            console.log($(this).children('.price').val());
             $('.modal-book').find('.bookingPrice').val($(this).children('.price').val());
             $('.modal-book').show();
         });
@@ -460,13 +533,27 @@
             $('.modal-going').hide();
         });
 
+        $('.btn-no').click(function(){
+            $('.modal-confirmation-book').hide();
+        });
+
         $('.btn-add-item').click(function(e){
             e.preventDefault();
             $item = '';
             $.each($items,function(index, value){
                 $item = $item + '<option value="'+value.id+'">'+value.name+'</option>';
             });
-            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" min="0" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
+        });
+
+        $('.btn-edit-item').click(function(e){
+            e.preventDefault();
+            $item = '';
+            $.each($items,function(index, value){
+                $item = $item + '<option value="'+value.id+'">'+value.name+'</option>';
+            });
+            $('.edit-item').append('<div class="item form-group"><div class="col-md-5"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-3"><input type="number" id="itemQuantity" min="0" class="form-control col-md-3 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-3"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-edit-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-11"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
+            $('.btn-submit').show();
         });
 
         $(document).on('change','.itemName',function(){
@@ -490,6 +577,59 @@
 
         $(document).on('click','.btn-minus',function(){
             $(this).parent().parent().remove();
+        });
+
+        $(document).on('click','.btn-edit-minus',function(){
+            $(this).parent().parent().remove();
+
+            if($('.btn-edit-minus').length == 0)
+                $('.btn-submit').hide();
+        });
+
+        $('.form-add-book').submit(function(e){
+            e.preventDefault();
+            $('#myConfirmationTitle').text("Add Book Confirmation");
+            $('.modal-confirmation-book').show();
+        });
+
+        $('.form-finalize-book').submit(function(e){
+            e.preventDefault();
+            $('#myConfirmationTitle').text("Finalize Book");
+            $('#transaction_id').val($(this).find('#id').val());
+            $('.modal-confirmation-book').show();
+        });
+
+        $('.form-edit-book').submit(function(e){
+            e.preventDefault();
+            $('#myConfirmationTitle').text("Edit Book Confirmation");
+            $('.modal-confirmation-book').show();
+        });
+
+        $('.form-confirmation-book').submit(function(e){
+            e.preventDefault();
+            if($('#myConfirmationTitle').text() == "Edit Book Confirmation") {
+                $.ajax({
+                    url: 'updateTransaction',
+                    type: 'POST',
+                    data: $('.form-edit-book').serialize(),
+                    success: function (response) {
+                        if (response == "success")
+                            location.href = '/home'
+                    }
+                });
+            } else if ($('#myConfirmationTitle').text() == "Finalize Book") {
+                location.href = "/updateStatus/"+$(this).find('#transaction_id').val();
+            } else {
+                $.ajax({
+                    url: 'createBooking',
+                    type: 'POST',
+                    data: $('.form-add-book').serialize(),
+                    success: function (response) {
+                        if (response == "success")
+                            location.href = '/home'
+                    }
+                });
+            }
         });
     </script>
 @endsection
