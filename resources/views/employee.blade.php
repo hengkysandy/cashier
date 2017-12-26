@@ -83,7 +83,7 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hour">Employee Role<span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <select name="role" class="form-control">
+                                <select id="role" name="role" class="form-control">
                                     <option value="1">Manager</option>
                                     <option value="2">Staff</option>
                                 </select>
@@ -168,7 +168,7 @@
         $('.form-new-employee').submit(function(e){
             e.preventDefault();
             $('.modal-add-employee').find('#myModalTitle').html("Add Employee");
-            $('.modal-add-employee').find('.form-add-employee').attr('action','createEmployee');
+            $('.modal-add-employee').find('.form-add-employee').attr('action',$fullpathUrl+'createEmployee');
             $('.modal-add-employee').find('#id').val(0);
             $('.modal-add-employee').find('#name').val("");
             $('.modal-add-employee').find('#email').val("");
@@ -183,16 +183,20 @@
         $('.btn-update-employee').click(function(e){
             e.preventDefault();
             $('.modal-add-employee').find('#myModalTitle').html("Update Employee");
-            $('.modal-add-employee').find('.form-add-employee').attr('action','updateEmployee');
+            $('.modal-add-employee').find('.form-add-employee').attr('action',$fullpathUrl+'updateEmployee');
             $('.modal-add-employee').find('#id').val($(this).parent().parent().find('.employee_id').text());
             $('.modal-add-employee').find('#name').val($(this).parent().parent().find('.employee_name').text());
             $('.modal-add-employee').find('#email').val($(this).parent().parent().find('.employee_email').text());
+
+            $roleIdx = $(this).parent().parent().find('.employee_role').text() == "Manager" ? 0 : 1;
+            $('.modal-add-employee').find('#role').prop('selectedIndex',$roleIdx);
+
             $('.modal-add-employee').show();
         });
 
         $('.btn-delete-employee').click(function(e){
             e.preventDefault();
-            $link = 'deleteEmployee/' + $(this).parent().parent().find('.employee_id').text();
+            $link = $fullpathUrl+'deleteEmployee/' + $(this).parent().parent().find('.employee_id').text();
             $('.modal-delete-employee').find('.form-delete-employee').attr('action',$link);
             $('.modal-delete-employee').show();
         });

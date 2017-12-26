@@ -23,21 +23,21 @@
                 <h3>Menu</h3>
                 <ul class="nav side-menu">
                     <li>
-                        <a href="/home"><i class="fa fa-home"></i>Home</a>
+                        <a href="{{url('home')}}"><i class="fa fa-home"></i>Home</a>
                     </li>
                     <li>
-                        <a href="/report"><i class="fa fa-calendar"></i>Report</a>
+                        <a href="{{url('report')}}"><i class="fa fa-calendar"></i>Report</a>
                     </li>
                     <li>
-                        <a href="/item"><i class="fa fa-archive"></i>Item</a>
+                        <a href="{{url('item')}}"><i class="fa fa-archive"></i>Item</a>
                     </li>
                     @if( session()->get('userSession')->role_id == 1 )
                     <li>
-                        <a href="/room"><i class="fa fa-bank"></i>Room</a>
+                        <a href="{{url('room')}}"><i class="fa fa-bank"></i>Room</a>
                     </li>
                     
                     <li>
-                        <a href="/employee"><i class="fa fa-user"></i>Employee</a>
+                        <a href="{{url('employee')}}"><i class="fa fa-user"></i>Employee</a>
                     </li>
                     @endif
                     

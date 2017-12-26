@@ -35,4 +35,16 @@ class Transaction extends Model
     {
         return $this->hasMany(TransactionDetail::class,'id_transaction','id');
     }
+
+    public function getTotalPrice() {
+      return $this->TransactionDetail->sum(function($td) {
+        return $td->quantity * $td->item_price;
+      });
+    }
+
+    public function getTotalPriceOther() {
+      return $this->TransactionDetail->sum(function($td) {
+        return $td->quantity * $td->other_item_price;
+      });
+    }
 }

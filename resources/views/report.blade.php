@@ -67,20 +67,32 @@
                                 <option value="12">December</option>
                             </select>
                           </div>
+                          <div class="col-md-3">
+                            Search by : Year
+                            <select class="form-control" id="year">
+                                <option value=""> -------- Select Year -------- </option>
+                                @foreach($years as $year)
+                                    <option value="{{$year}}">{{$year}}</option>
+                                @endforeach
+                            </select>
+                          </div>
                         <div class="x_content">
                             <div class="table-responsive">
                                 <table id="report_table" class="table table-striped jambo_table bulk_action">
                                     <thead>
                                     <tr class="headings">
                                         <th class="column-title">Month</th>
+                                        <th class="column-title">Year</th>
+                                        <th style="display: none" class="column-title">Customer Phone </th>
+                                        <th style="display: none" class="column-title">Room Price</th>
                                         <th class="column-title">No.</th>
                                         <th class="column-title">Room </th>
-                                        <th class="column-title">Room Price </th>
                                         <th class="column-title">Customer Name </th>
-                                        <th class="column-title">Customer Phone </th>
                                         <th class="column-title">Booking Date </th>
                                         <th class="column-title">Start Time </th>
                                         <th class="column-title">End Time </th>
+                                        <th class="column-title">Grand Total </th>
+                                        <th class="column-title">Status </th>
                                         <th class="column-title no-link last">
                                             <span class="nobr">Action</span>
                                         </th>
@@ -90,14 +102,18 @@
                                     @foreach($transaction as $data)
                                     <tr class="even pointer">
                                         <td class=" ">{{$data->created_at->format('m')}}</td>
+                                        <td class=" ">{{$data->created_at->year}}</td>
+                                        <td style="display: none" class="customer_phone">{{$data->customer_phone}}</td>
+                                        <td style="display: none" class="room_price">{{$data->room_price}}</td>
                                         <td class=" ">{{$data->id}}</td>
-                                        <td class=" ">{{$data->Room->name}}</td>
-                                        <td class=" ">Rp {{number_format($data->room_price,0,'','.')}},-</td>
-                                        <td class=" ">{{$data->customer_name}}</td>
-                                        <td class=" ">{{$data->customer_phone}}</td>
+                                        <td class="room_name">{{$data->Room->name}}</td>
+                                        <td class="customer_name">{{$data->customer_name}}</td>
                                         <td class=" ">{{$data->created_at->format('Y-m-d')}}</td>
                                         <td class=" ">{{$data->created_at->format('H:i')}}</td>
-                                        <td class=" ">{{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i')}}</td>
+                                        <td class=" ">{{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') >= 24 ? ( $data->created_at->format('H')-24+$data->booking_hour.":".$data->created_at->format('i')) :  $data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') }}</td>
+                                        <td class="grand_total">Rp. {{number_format($data->getTotalPrice()+$data->getTotalPriceOther()+$data->room_price)}}</td>
+                                        <?php $btnClass = $data->status == "On Going" ? 'text-danger' : 'text-success' ?>
+                                        <td class="{{$btnClass}}"><b>{{$data->status}}</b></td>
                                         <td class=" last">
                                             <button type="button" value="{{$data->id}}" class="btn btn-primary btn-xs btn-view-detail">View Detail</button>
                                         </td>
@@ -140,18 +156,36 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12" style="text-align: left" for="hour" id="employee">
                                 </label>
                             </div>
+                            <div class="col-md-12 col-sm-9 col-xs-12 col-md-offset-1">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left" for="hour">Customer Name
+                                </label>
+                                <label class="control-label col-md-1 col-sm-3 col-xs-12" for="hour">:
+                                </label>
+                                <label class="control-label col-md-4 col-sm-3 col-xs-12" style="text-align: left" for="hour" id="curr_customer_name">
+                                </label>
+                            </div>
+                            <div class="col-md-12 col-sm-9 col-xs-12 col-md-offset-1">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left" for="hour">Customer Phone
+                                </label>
+                                <label class="control-label col-md-1 col-sm-3 col-xs-12" for="hour">:
+                                </label>
+                                <label class="control-label col-md-4 col-sm-3 col-xs-12" style="text-align: left" for="hour" id="curr_customer_phone">
+                                </label>
+                            </div>
                             <div class="col-md-10 col-sm-9 col-xs-12 col-md-offset-1">
                                 <table class="table table-striped">
                                     <thead>
-                                        <th>No.</th>
                                         <th>Item Name</th>
                                         <th>Item Price</th>
                                         <th>Quantity</th>
+                                        <th>Total Price</th>
                                     </thead>
                                     <tbody class="report-tbody">
                                         
                                     </tbody>
                                 </table>
+                                <hr>
+                                <p style="text-align: right;font-weight: bold">Grand Total : <span id="curr_grand_total"></span></p>
                             </div>
                         </div>
                     </div>
@@ -168,7 +202,7 @@
             rp = $('#report_table').DataTable({
                 "columnDefs": [
                             {
-                                "targets": [ 0 ],
+                                "targets": [ 0,1 ],
                                 "visible": false,
                                 "searchable": true
                             }
@@ -179,42 +213,61 @@
                 rp.column(0).search(this.value).draw();
             });
 
+            $('#year').on('change', function(){
+                rp.column(1).search(this.value).draw();
+            });
+
+            //datetime range picker
             $('.applyBtn').html('Search');
             $(".applyBtn").on("click", function() {
                 $("#reservation-time").on("change paste keyup", function() {
                    $('#filter-form').submit();
                 });
             });
-             
+
+            function zeroPad(numberStr) {
+              return numberStr.padStart(2, "0");
+            }
+            
 
             $('.btn-view-detail').click(function(e){
                 e.preventDefault();
                 $('.modal-view-detail').find('#myModalTitle').html("View Detail");
                 $('#no-transaction').html( $(this).val() );
-
+                $('#curr_customer_name').html( $(this).parent().parent().find('.customer_name').text() );
+                $('#curr_customer_phone').html( $(this).parent().parent().find('.customer_phone').text() );
 
                 $('.report-tbody tr').remove();
+
+                $('.report-tbody').append('<tr><td>'+ $(this).parent().parent().find('.room_name').text() +'</td><td>Rp. '+ $(this).parent().parent().find('.room_price').text() +',-</td><td></td><td>Rp. '+$(this).parent().parent().find('.room_price').text()+',-</td></tr>');
+
+                $('#curr_grand_total').text($(this).parent().parent().find('.grand_total').text()+',-');
+
                 $.ajax({
-                    url: '/getTransaction/'+$(this).val(),
+                    url: $fullpathUrl+'/getTransaction/'+$(this).val(),
                     type: 'GET',
+                    async : false,
                     success: function(response){
                         $('#employee').html(response["employee_name"]);
+
+                        
+
                         $.each(response["transactionDetail"], function(index, value){
                             if(value["item_id"]!=null){
                                 $.ajax({
-                                    url: '/getItem/'+value["item_id"],
+                                    url: $fullpathUrl+'/getItem/'+value["item_id"],
                                     type: 'GET',
                                     success: function(responseItem){
-                                        $('.report-tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                        $('.report-tbody').append('<tr><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td><td>Rp. '+responseItem["item"]["price"]*value["quantity"]+',-</td></tr>');
                                     }
                                 });
                             } else {
                                 $.ajax({
-                                    url: '/getDetailTransaction/'+value["id"],
+                                    url: $fullpathUrl+'/getDetailTransaction/'+value["id"],
                                     type: 'GET',
                                     success: function(responseItem){
                                         console.log(responseItem);
-                                        $('.report-tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                        $('.report-tbody').append('<tr><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td><td>Rp. '+responseItem["transactionDetail"]["other_item_price"]*value["quantity"]+',-</td></tr>');
                                     }
                                 });
                             }

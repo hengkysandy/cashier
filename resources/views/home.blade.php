@@ -52,7 +52,7 @@
                                                         <form class="form-going">
                                                             <input type="hidden" class="going_id" value="{{ $transaction->id }}">
                                                             <input type="hidden" class="going_type" value="{{ $room->type }}">
-                                                            <a href="printTransaction/{{ $transaction->id }}" target="_blank"><button type="button" class="btn btn-primary btn-print" disabled>Print</button></a>
+                                                            <a href="{{url('printTransaction/'.$transaction->id)}}" target="_blank"><button type="button" class="btn btn-primary btn-print" disabled>Print</button></a>
                                                             <input type="submit" value="Edit" class="btn btn-info" disabled="">
                                                         </form>
                                                         <?php $flag = 1; ?>
@@ -480,7 +480,7 @@
             $('#myModalGoing').html('Booking ' + $(this).children('.going_type').val() + ' Detail');
             $('.going_item tbody tr').remove();
             $.ajax({
-                url: '/getTransaction/'+$(this).children('.going_id').val(),
+                url: $fullpathUrl+'/getTransaction/'+$(this).children('.going_id').val(),
                 type: 'GET',
                 success: function(response){
                     $('.going_id').val(response["transaction"]["id"]);
@@ -493,7 +493,7 @@
                     $.each(response["transactionDetail"], function(index, value){
                         if(value["item_id"]!=null){
                             $.ajax({
-                                url: '/getItem/'+value["item_id"],
+                                url: $fullpathUrl+'/getItem/'+value["item_id"],
                                 type: 'GET',
                                 success: function(responseItem){
                                     $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
@@ -501,7 +501,7 @@
                             });
                         } else {
                             $.ajax({
-                                url: '/getDetailTransaction/'+value["id"],
+                                url: $fullpathUrl+'/getDetailTransaction/'+value["id"],
                                 type: 'GET',
                                 success: function(responseItem){
                                     $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
@@ -609,24 +609,24 @@
             e.preventDefault();
             if($('#myConfirmationTitle').text() == "Edit Book Confirmation") {
                 $.ajax({
-                    url: 'updateTransaction',
+                    url: $fullpathUrl+'updateTransaction',
                     type: 'POST',
                     data: $('.form-edit-book').serialize(),
                     success: function (response) {
                         if (response == "success")
-                            location.href = '/home'
+                            location.href = $fullpathUrl+'/home'
                     }
                 });
             } else if ($('#myConfirmationTitle').text() == "Finalize Book") {
-                location.href = "/updateStatus/"+$(this).find('#transaction_id').val();
+                location.href = $fullpathUrl+"/updateStatus/"+$(this).find('#transaction_id').val();
             } else {
                 $.ajax({
-                    url: 'createBooking',
+                    url: $fullpathUrl+'createBooking',
                     type: 'POST',
                     data: $('.form-add-book').serialize(),
                     success: function (response) {
                         if (response == "success")
-                            location.href = '/home'
+                            location.href = $fullpathUrl+'/home'
                     }
                 });
             }

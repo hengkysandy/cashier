@@ -946,6 +946,8 @@
             html += ': <select class="minuteselect">';
 
             for (var i = 0; i < 60; i += this.timePickerIncrement) {
+            // for (var i = 0; i < 60; i ++) {
+                //edited by HN, btw bukan dari sini edit menitnya
                 var padded = i < 10 ? '0' + i : i;
                 var time = selected.clone().minute(i);
 

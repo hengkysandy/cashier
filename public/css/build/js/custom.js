@@ -1571,7 +1571,6 @@ if (typeof NProgress != 'undefined') {
 	   /* DATERANGEPICKER */
 	   
 		function init_daterangepicker() {
-
 			if( typeof ($.fn.daterangepicker) === 'undefined'){ return; }
 			console.log('init_daterangepicker');
 		
@@ -1767,9 +1766,11 @@ if (typeof NProgress != 'undefined') {
 			$('#reservation').daterangepicker(null, function(start, end, label) {
 			  console.log(start.toISOString(), end.toISOString(), label);
 			});
-
+			//edited by HN, cuma pake nya yang custom.min.js ya, bukan ini
+			alert()
 			$('#reservation-time').daterangepicker({
 			  timePicker: true,
+			  // timePickerIncrement: 1,
 			  timePickerIncrement: 30,
 			  locale: {
 				format: 'MM/DD/YYYY h:mm A'

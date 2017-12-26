@@ -146,7 +146,7 @@
         $('.form-new-room').submit(function(e){
             e.preventDefault();
             $('.modal-add-room').find('#myModalTitle').html("Add Room");
-            $('.modal-add-room').find('.form-add-room').attr('action','createRoom');
+            $('.modal-add-room').find('.form-add-room').attr('action',$fullpathUrl+'createRoom');
             $('.modal-add-room').find('#id').val(0);
             $('.modal-add-room').find('#type').val("Room");
             $('.modal-add-room').find('#name').val("");
@@ -163,7 +163,7 @@
             e.preventDefault();
             $price = Number($(this).parent().parent().find('.room_price').text().replace(/[.,-]/g,"").split('Rp ')[1]);
             $('.modal-add-room').find('#myModalTitle').html("Update Room");
-            $('.modal-add-room').find('.form-add-room').attr('action','updateRoom');
+            $('.modal-add-room').find('.form-add-room').attr('action',$fullpathUrl+'updateRoom');
             $('.modal-add-room').find('#id').val($(this).parent().parent().find('.room_id').text());
             $('.modal-add-room').find('#type').val($(this).parent().parent().find('.room_type').text());
             $('.modal-add-room').find('#name').val($(this).parent().parent().find('.room_name').text());
@@ -173,7 +173,7 @@
 
         $('.btn-delete-room').click(function(e){
             e.preventDefault();
-            $link = 'deleteRoom/' + $(this).parent().parent().find('.room_id').text();
+            $link = $fullpathUrl+'deleteRoom/' + $(this).parent().parent().find('.room_id').text();
             $('.modal-delete-room').find('.form-delete-room').attr('action',$link);
             $('.modal-delete-room').show();
         });

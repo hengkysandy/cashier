@@ -48,6 +48,8 @@
     <link href="{{ asset('css/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
 
+    <meta name="fullpath" content="{{ URL::to('') }}">
+
     @yield('style')
 </head>
 <body class="nav-md" onload=@yield('load')>
@@ -145,7 +147,10 @@
         $(document).ready(function (){
             $('.ui-pnotify').remove();
         });
+
+        $fullpathUrl = $('meta[name="fullpath"]').attr('content') + '/';
     </script>
+
     @yield('script')
 </body>
 </html>
