@@ -89,15 +89,15 @@
                                     <tbody>
                                     @foreach($transaction as $data)
                                     <tr class="even pointer">
-                                        <td class=" ">{{$data->start_time->format('m')}}</td>
+                                        <td class=" ">{{$data->created_at->format('m')}}</td>
                                         <td class=" ">{{$data->id}}</td>
                                         <td class=" ">{{$data->Room->name}}</td>
                                         <td class=" ">Rp {{number_format($data->room_price,0,'','.')}},-</td>
                                         <td class=" ">{{$data->customer_name}}</td>
                                         <td class=" ">{{$data->customer_phone}}</td>
-                                        <td class=" ">{{$data->start_time->format('Y-m-d')}}</td>
-                                        <td class=" ">{{$data->start_time->format('H:i')}}</td>
-                                        <td class=" ">{{$data->end_time->format('H:i')}}</td>
+                                        <td class=" ">{{$data->created_at->format('Y-m-d')}}</td>
+                                        <td class=" ">{{$data->created_at->format('H:i')}}</td>
+                                        <td class=" ">{{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i')}}</td>
                                         <td class=" last">
                                             <button type="button" value="{{$data->id}}" class="btn btn-primary btn-xs btn-view-detail">View Detail</button>
                                         </td>
