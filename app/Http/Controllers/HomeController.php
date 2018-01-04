@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
+
     public function view()
     {
 		if(session()->get('userSession')->id != "") {

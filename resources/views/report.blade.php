@@ -91,13 +91,19 @@
                                         <th class="column-title">Booking Date </th>
                                         <th class="column-title">Start Time </th>
                                         <th class="column-title">End Time </th>
-                                        <th class="column-title">Grand Total </th>
+                                        <th class="column-title">Total Price </th>
                                         <th class="column-title">Status </th>
                                         <th class="column-title no-link last">
                                             <span class="nobr">Action</span>
                                         </th>
                                     </tr>
                                     </thead>
+                                    <tfoot>
+                                        <tr style="color: green">
+                                            <th colspan="10" style="text-align:right">Grand Total :</th>
+                                            <th id="showTotal"></th>
+                                        </tr>
+                                    </tfoot>
                                     <tbody>
                                     @foreach($transaction as $data)
                                     <tr class="even pointer">
@@ -199,15 +205,37 @@
     <script>
         $(function(){
 
-            rp = $('#report_table').DataTable({
-                "columnDefs": [
+            $('#report_table').DataTable( {
+                    "footerCallback": function ( row, data, start, end, display ) {
+                        var api = this.api(), data;
+                        
+                        var arrPrice = api.column( 10 ).data();
+                        var total = 0;
+                        for (var i = arrPrice.length - 1; i >= 0; i--) {
+                            total += parseInt(arrPrice[i].replace(",","").substring(3));
+                        }
+
+                        $('#showTotal').html('Rp. ' + new Intl.NumberFormat().format(total));
+
+                    },
+                    "columnDefs": [
                             {
                                 "targets": [ 0,1 ],
                                 "visible": false,
                                 "searchable": true
                             }
                         ],
-            });
+                } );
+
+            // rp = $('#report_table').DataTable({
+            //     "columnDefs": [
+            //                 {
+            //                     "targets": [ 0,1 ],
+            //                     "visible": false,
+            //                     "searchable": true
+            //                 }
+            //             ],
+            // });
 
             $('#month').on('change', function(){
                 rp.column(0).search(this.value).draw();
