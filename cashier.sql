@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2017 at 10:12 AM
--- Server version: 10.1.19-MariaDB
--- PHP Version: 7.0.13
+-- Generation Time: Jan 05, 2018 at 06:07 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -70,10 +70,10 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`id`, `name`, `price`, `stock`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'beer', 50000, 20, 'active', '2017-12-01 11:31:36', '0000-00-00 00:00:00', NULL),
-(2, 'botol aqua', 4000, 50, 'active', '2017-12-01 11:31:53', '0000-00-00 00:00:00', NULL),
+(1, 'beer', 50000, 12, 'active', '2017-12-01 11:31:36', '2018-01-05 17:01:53', NULL),
+(2, 'botol aqua', 4000, 48, 'active', '2017-12-01 11:31:53', '2017-12-26 04:25:49', NULL),
 (3, 'teh kotak', 5000, 60, 'active', '2017-12-01 11:32:31', '0000-00-00 00:00:00', NULL),
-(4, 'nasi padang', 15000, 15, 'active', '2017-12-01 11:32:54', '0000-00-00 00:00:00', NULL),
+(4, 'nasi padang', 15000, 10, 'active', '2017-12-01 11:32:54', '2018-01-05 17:01:53', NULL),
 (5, 'item1', 5000, 88, 'active', '2017-12-01 19:42:51', '2017-12-01 19:42:51', NULL);
 
 -- --------------------------------------------------------
@@ -156,8 +156,16 @@ CREATE TABLE `transaction` (
 --
 
 INSERT INTO `transaction` (`id`, `room_id`, `room_price`, `employee_id`, `customer_name`, `customer_phone`, `booking_hour`, `start_time`, `end_time`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 50000, 2, 'andy', '081208120812', 2, NULL, NULL, 'On Going', '2017-12-01 11:36:12', '0000-00-00 00:00:00', NULL),
-(2, 2, 60000, NULL, 'qwery', '123412341234', 2, NULL, NULL, 'On Going', '2017-12-13 01:43:33', '2017-12-13 01:43:33', NULL);
+(3, 1, 50000, 1, 'Mario', '081237182372', 8, '2017-12-26 02:00:00', '2017-12-26 10:00:00', 'Finalize', '2017-12-16 01:45:11', '2017-12-26 04:25:34', NULL),
+(4, 1, 50000, 1, 'Hengky', '081237182372', 2, '2017-12-16 05:00:00', '2017-12-16 07:00:00', 'On Going', '2017-12-16 01:53:49', '2017-12-16 01:53:49', NULL),
+(5, 2, 60000, 1, 'Tedy', '081201239321', 2, '2017-12-16 01:00:00', '2017-12-16 03:00:00', 'On Going', '2017-12-16 01:54:34', '2017-12-16 01:54:34', NULL),
+(7, 1, 50000, 1, 'Hengaaa', '081201239321', 1, '2017-12-17 17:00:00', '2017-12-17 19:00:00', 'On Going', '2017-12-16 15:52:54', '2017-12-16 15:52:54', NULL),
+(8, 1, 50000, 1, 'Fenky', '081201239321', 1, '2017-12-17 19:00:00', '2017-12-17 20:00:00', 'On Going', '2017-12-17 18:58:39', '2017-12-17 18:58:39', NULL),
+(9, 1, 50000, 1, 'Tedy Junaidi', '081201239321', 2, '2017-12-18 18:00:00', '2017-12-18 20:00:00', 'On Going', '2017-12-18 17:39:22', '2017-12-18 17:39:22', NULL),
+(13, 2, 60000, 1, 'Mario', '081237182372', 4, NULL, NULL, 'On Going', '2017-12-26 02:39:55', '2017-12-26 02:39:55', NULL),
+(16, 1, 50000, 1, 'Cindy', '081237182372', 4, NULL, NULL, 'On Going', '2017-12-26 04:37:26', '2017-12-26 04:37:26', NULL),
+(17, 1, 50000, 1, 'Mario', '081237182372', 2, NULL, NULL, 'Finalize', '2018-01-05 17:00:03', '2018-01-05 17:01:36', NULL),
+(18, 2, 60000, 1, 'Mario', '081237182372', 2, NULL, NULL, 'Finalize', '2018-01-05 17:00:34', '2018-01-05 17:04:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -183,12 +191,23 @@ CREATE TABLE `transaction_detail` (
 --
 
 INSERT INTO `transaction_detail` (`id`, `id_transaction`, `item_id`, `item_price`, `other_item_name`, `other_item_price`, `quantity`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 50000, NULL, NULL, 2, '2017-12-01 11:51:32', '0000-00-00 00:00:00', NULL),
-(2, 1, 2, 4000, NULL, NULL, 4, '2017-12-01 11:54:09', '0000-00-00 00:00:00', NULL),
-(3, 2, 3, 5000, NULL, NULL, 1, '2017-12-13 01:43:34', '2017-12-13 01:43:34', NULL),
-(4, 2, 4, 15000, NULL, NULL, 4, '2017-12-13 01:43:34', '2017-12-13 01:43:34', NULL),
-(5, 2, NULL, NULL, 'mie goreng', 5666, 2, '2017-12-13 01:43:34', '2017-12-13 01:43:34', NULL),
-(6, 2, NULL, NULL, 'nasgor', 6655, 3, '2017-12-13 01:43:34', '2017-12-13 01:43:34', NULL);
+(7, 3, 1, 50000, NULL, NULL, 5, '2017-12-16 01:45:11', '2017-12-16 01:45:11', NULL),
+(8, 3, NULL, NULL, 'Es Teh', 2000, 10, '2017-12-16 01:45:11', '2017-12-16 01:45:11', NULL),
+(9, 4, 2, 4000, NULL, NULL, 2, '2017-12-16 01:53:49', '2017-12-16 01:53:49', NULL),
+(10, 5, 4, 15000, NULL, NULL, 3, '2017-12-16 01:54:34', '2017-12-16 01:54:34', NULL),
+(11, 7, 1, 50000, NULL, NULL, 5, '2017-12-16 15:52:54', '2017-12-16 15:52:54', NULL),
+(12, 7, NULL, NULL, 'Wine', 100000, 5, '2017-12-16 15:52:54', '2017-12-16 15:52:54', NULL),
+(13, 8, 3, 5000, NULL, NULL, 5, '2017-12-17 18:58:39', '2017-12-17 18:58:39', NULL),
+(14, 9, 1, 50000, NULL, NULL, 5, '2017-12-18 17:39:22', '2017-12-18 17:39:22', NULL),
+(15, 13, 1, 50000, NULL, NULL, NULL, '2017-12-26 02:39:55', '2017-12-26 02:39:55', NULL),
+(16, 3, 4, 15000, NULL, NULL, 1, '2017-12-26 03:09:39', '2017-12-26 03:09:39', NULL),
+(18, 3, 2, 4000, NULL, NULL, 2, '2017-12-26 04:25:49', '2017-12-26 04:25:49', NULL),
+(19, 16, 1, 50000, NULL, NULL, 1, '2017-12-26 04:37:26', '2017-12-26 04:37:26', NULL),
+(20, 17, 1, 50000, NULL, NULL, 4, '2018-01-05 17:00:03', '2018-01-05 17:00:03', NULL),
+(21, 17, 4, 15000, NULL, NULL, 2, '2018-01-05 17:00:18', '2018-01-05 17:00:18', NULL),
+(22, 18, 1, 50000, NULL, NULL, 1, '2018-01-05 17:00:46', '2018-01-05 17:00:46', NULL),
+(23, 17, 1, 50000, NULL, NULL, 1, '2018-01-05 17:01:53', '2018-01-05 17:01:53', NULL),
+(24, 17, 4, 15000, NULL, NULL, 2, '2018-01-05 17:01:53', '2018-01-05 17:01:53', NULL);
 
 --
 -- Indexes for dumped tables
@@ -243,12 +262,12 @@ ALTER TABLE `transaction_detail`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `role`
 --
@@ -258,17 +277,17 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `transaction_detail`
 --
 ALTER TABLE `transaction_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- Constraints for dumped tables
 --
