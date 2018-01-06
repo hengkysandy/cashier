@@ -14,10 +14,9 @@ class ReportController extends Controller
     	$data['transaction'] = Transaction::latest('created_at')->orderBy('status','desc');
 
     	$data['transaction'] = $data['transaction']->get();
-        for ($currYear= Carbon::now()->year; $currYear >=  Transaction::all()->last()->created_at->year; $currYear--) { 
+        for ($currYear= Carbon::now()->year; $currYear >=  Transaction::all()->first()->created_at->year; $currYear--) { //edit
             $data['years'][] = $currYear;
         }
-
     	return view('report',$data);
     }
 

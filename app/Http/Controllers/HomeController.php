@@ -14,6 +14,13 @@ class HomeController extends Controller
 
     public function view()
     {
+    	/*
+		kodingan foreach yang di home
+		@foreach($room->Transaction as $key => $transaction)
+		    @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
+
+		@endforeach
+    	*/
 		if(session()->get('userSession')->id != "") {
 			$data['rooms'] = Room::all();
 			$data['items'] = Item::all();
@@ -146,6 +153,8 @@ class HomeController extends Controller
 
     public function getTransaction($id){
     	$data['transaction'] = Transaction::find($id);
+    	$data['grand'] = $data['transaction']->getTotalPrice() + $data['transaction']->getTotalPriceOther() + ($data['transaction']->room_price * $data['transaction']->booking_hour);
+    	$data['room'] = $data['transaction']->Room;
     	$data['employee_name'] = $data['transaction']->Employee->name;
     	$data['transactionDetail'] = TransactionDetail::where('id_transaction','=',$id)->get();
     	return $data;

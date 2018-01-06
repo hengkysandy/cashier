@@ -85,6 +85,7 @@
                                         <th class="column-title">Year</th>
                                         <th style="display: none" class="column-title">Customer Phone </th>
                                         <th style="display: none" class="column-title">Room Price</th>
+                                        <th style="display: none" class="column-title">Booking Hour</th> <!--edit-->
                                         <th class="column-title">No.</th>
                                         <th class="column-title">Room </th>
                                         <th class="column-title">Customer Name </th>
@@ -111,13 +112,14 @@
                                         <td class=" ">{{$data->created_at->year}}</td>
                                         <td style="display: none" class="customer_phone">{{$data->customer_phone}}</td>
                                         <td style="display: none" class="room_price">{{$data->room_price}}</td>
+                                        <td style="display: none" class="booking_hour">{{$data->booking_hour}}</td> <!--edit-->
                                         <td class=" ">{{$data->id}}</td>
                                         <td class="room_name">{{$data->Room->name}}</td>
                                         <td class="customer_name">{{$data->customer_name}}</td>
                                         <td class=" ">{{$data->created_at->format('Y-m-d')}}</td>
                                         <td class=" ">{{$data->created_at->format('H:i')}}</td>
                                         <td class=" ">{{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') >= 24 ? ( $data->created_at->format('H')-24+$data->booking_hour.":".$data->created_at->format('i')) :  $data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') }}</td>
-                                        <td class="grand_total">Rp. {{number_format($data->getTotalPrice()+$data->getTotalPriceOther()+$data->room_price)}}</td>
+                                        <td class="grand_total">Rp. {{number_format($data->getTotalPrice()+$data->getTotalPriceOther()+($data->room_price*$data->booking_hour))}}</td> <!--edit-->
                                         <?php $btnClass = $data->status == "On Going" ? 'text-danger' : 'text-success' ?>
                                         <td class="{{$btnClass}}"><b>{{$data->status}}</b></td>
                                         <td class=" last">
@@ -205,18 +207,22 @@
     <script>
         $(function(){
 
-            $('#report_table').DataTable( {
+            function refreshTotal(arrPrice) {
+                //edit 10 -> 11
+                var total = 0;
+                for (var i = arrPrice.length - 1; i >= 0; i--) {
+                    total += parseInt(arrPrice[i].replace(",","").substring(3));
+                }
+                $('#showTotal').html('Rp. ' + new Intl.NumberFormat().format(total));
+
+                
+            }
+
+            rp = $('#report_table').DataTable( { //edit
                     "footerCallback": function ( row, data, start, end, display ) {
                         var api = this.api(), data;
-                        
-                        var arrPrice = api.column( 10 ).data();
-                        var total = 0;
-                        for (var i = arrPrice.length - 1; i >= 0; i--) {
-                            total += parseInt(arrPrice[i].replace(",","").substring(3));
-                        }
 
-                        $('#showTotal').html('Rp. ' + new Intl.NumberFormat().format(total));
-
+                        refreshTotal(api.column( 11 ).data());
                     },
                     "columnDefs": [
                             {
@@ -239,10 +245,12 @@
 
             $('#month').on('change', function(){
                 rp.column(0).search(this.value).draw();
+                refreshTotal($('#report_table').DataTable().column( 11, {search:'applied'} ).data());
             });
 
             $('#year').on('change', function(){
                 rp.column(1).search(this.value).draw();
+                refreshTotal($('#report_table').DataTable().column( 11, {search:'applied'} ).data());
             });
 
             //datetime range picker
@@ -267,7 +275,7 @@
 
                 $('.report-tbody tr').remove();
 
-                $('.report-tbody').append('<tr><td>'+ $(this).parent().parent().find('.room_name').text() +'</td><td>Rp. '+ $(this).parent().parent().find('.room_price').text() +',-</td><td></td><td>Rp. '+$(this).parent().parent().find('.room_price').text()+',-</td></tr>');
+                $('.report-tbody').append('<tr><td>'+ $(this).parent().parent().find('.room_name').text() +'</td><td>Rp. '+ $(this).parent().parent().find('.room_price').text() +',-</td><td>'+$(this).parent().parent().find('.booking_hour').text()+' hours</td><td>Rp. '+($(this).parent().parent().find('.room_price').text()*$(this).parent().parent().find('.booking_hour').text())+',-</td></tr>'); //edit
 
                 $('#curr_grand_total').text($(this).parent().parent().find('.grand_total').text()+',-');
 
@@ -294,7 +302,7 @@
                                     url: $fullpathUrl+'/getDetailTransaction/'+value["id"],
                                     type: 'GET',
                                     success: function(responseItem){
-                                        console.log(responseItem);
+                                        // console.log(responseItem);
                                         $('.report-tbody').append('<tr><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td><td>Rp. '+responseItem["transactionDetail"]["other_item_price"]*value["quantity"]+',-</td></tr>');
                                     }
                                 });

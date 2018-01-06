@@ -51,49 +51,43 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            <label class="col-md-5">Booking Time</label>
+                            <label class="col-md-5">Booking Date</label>
                             <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->created_at->format('i') }}</div>
+                            <div class="col-md-5">{{ $transaction->created_at->format('j F Y h:i A') }}</div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="col-md-5">Booking Hour</label>
-                            <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->booking_hour }}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="col-md-5">Booking Price</label>
-                            <div class="col-md-2">:</div>
-                            <div class="col-md-5">Rp. {{ number_format($transaction->room_price,0,'','.') }},-</div>
-                        </div>
-                        <hr>
                     </div>
                     <h2>Transaction Detail</h2>
                     <div class="col-md-12">
                         <table class="going_item table table-striped text-justify">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
                                     <th>Item Name</th>
                                     <th>Item Price</th>
-                                    <th>Item Quantity</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td>{{ $transaction->Room->name }}</td>
+                                    <td>Rp. {{ number_format($transaction->room_price,0,'','.') }},-</td>
+                                    <td>{{ $transaction->booking_hour }} hours</td>
+                                    <td>Rp. {{ number_format($transaction->room_price * $transaction->booking_hour,0,'','.') }},-</td>
+                                </tr>
                                 @foreach($transaction->TransactionDetail as $index => $detail)
                                     <tr>
-                                        <td>{{ $index+1 }}</td>
                                         <td>{{ $detail->item_id!=""?$detail->Item->name:$detail->other_item_name }}</td>
                                         <td>Rp. {{ $detail->item_id!=""?number_format($detail->Item->price,0,'','.'):number_format($detail->other_item_price,0,'','.') }},-</td>
                                         <td>{{ $detail->quantity }} pcs</td>
+                                        <td>Rp. {{ $detail->item_id!=""?number_format($detail->Item->price * $detail->quantity,0,'','.'):number_format($detail->other_item_price * $detail->quantity,0,'','.') }},-</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                         <hr>
+                    </div>
+                    <div class="col-md-12">
+                        <p style="font-weight: bold; text-align: right;">Grand Total : Rp. {{number_format($transaction->getTotalPrice()+$transaction->getTotalPriceOther()+($transaction->room_price*$transaction->booking_hour))}}</p>
                     </div>
                     <h6>Thanks from CS : {{ $transaction->Employee->name }}</h6>
                     <h5>Copyright &copy; Cashier - 2017</h5>

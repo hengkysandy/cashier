@@ -38,34 +38,25 @@
                                     <h2>{{ $room->name }}</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
-                                            @if(count($room->Transaction)==0)
+                                            @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                 <form class="form-book">
                                                     <input type="hidden" class="id" value="{{ $room->id }}">
                                                     <input type="hidden" class="type" value="{{ $room->type }}">
                                                     <input type="hidden" class="price" value="{{ $room->price }}">
                                                     <input type="submit" value="Book" class="btn btn-success" disabled="">
                                                 </form>
-                                            @else
-                                                @foreach($room->Transaction as $key => $transaction)
-                                                    @if($time->format('Y-m-d') == explode(" ",$transaction->created_at)[0] && ($time->format('Hi') >= explode(":",explode(" ",$transaction->created_at)[1])[0].explode(":",explode(" ",$transaction->created_at)[1])[1] && $time->format('Hi') <= explode(":",explode(" ",$transaction->created_at)[1])[0]+$transaction->booking_hour.explode(":",explode(" ",$transaction->created_at)[1])[1]))
-                                                        <?php $id = $transaction->id; $status = $transaction->status; ?>
+                                            @elseif( $room->Transaction->where('status','On Going')->first() )
+                                                
+                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
                                                         <form class="form-going">
-                                                            <input type="hidden" class="going_id" value="{{ $transaction->id }}">
+                                                            <input type="hidden" class="going_id" value="{{ $room->Transaction->where('status','On Going')->first()->id }}">
                                                             <input type="hidden" class="going_type" value="{{ $room->type }}">
-                                                            <a href="{{url('printTransaction/'.$transaction->id)}}" target="_blank"><button type="button" class="btn btn-primary btn-print" disabled>Print</button></a>
+                                                            <a href="{{url('printTransaction/'.$room->Transaction->where('status','On Going')->first()->id)}}" target="_blank"><button type="button" class="btn btn-primary btn-print" disabled>Print</button></a>
                                                             <input type="submit" value="Edit" class="btn btn-info" disabled="">
                                                         </form>
-                                                        <?php $flag = 1; ?>
-                                                    @endif
-                                                @endforeach
-                                                @if($flag == 0)
-                                                    <form class="form-book">
-                                                        <input type="hidden" class="id" value="{{ $room->id }}">
-                                                        <input type="hidden" class="type" value="{{ $room->type }}">
-                                                        <input type="hidden" class="price" value="{{ $room->price }}">
-                                                        <input type="submit" value="Book" class="btn btn-success" disabled="">
-                                                    </form>
-                                                @endif
+                                                        
+                                                    
+                                                
                                             @endif
                                         </li>
                                     </ul>
@@ -142,7 +133,7 @@
                                         <tr>
                                             <th><h5>Booking Price</h5></th>
                                             <td>:</td>
-                                            <td><h5>Rp. {{ $room->price!=""?number_format($room->price,0,'','.'):0 }},-</h5></td>
+                                            <td><h5>Rp. {{ $room->price!=""?number_format($room->price,0,'','.'):0 }},- /hour</h5></td><!--edit-->
                                         </tr>
                                     </table>
                                     <form class="form-finalize-book">
@@ -397,16 +388,18 @@
                                 <table class="going_item table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>No.</th>
                                             <th>Item Name</th>
                                             <th>Item Price</th>
-                                            <th>Item Quantity</th>
+                                            <th>Quantity</th>
+                                            <th>Total Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
                             </div>
+                            <hr>
+                            <p style="text-align: right;font-weight: bold">Grand Total : <span id="curr_grand_total"></span></p>
                         </div>
                         <hr>
                         <form class="form-edit-book">
@@ -477,11 +470,13 @@
 
         $(".form-going").submit(function(e){
             e.preventDefault();
+            // alert($(this).children('.going_id').val()); aneh
             $('#myModalGoing').html('Booking ' + $(this).children('.going_type').val() + ' Detail');
             $('.going_item tbody tr').remove();
             $.ajax({
                 url: $fullpathUrl+'/getTransaction/'+$(this).children('.going_id').val(),
                 type: 'GET',
+                async : false,
                 success: function(response){
                     $('.going_id').val(response["transaction"]["id"]);
                     $('.going_name').val(response["transaction"]["customer_name"]);
@@ -490,13 +485,17 @@
                     $('.going_hour').val(response["transaction"]["booking_hour"]);
                     $('.going_price').val(response["transaction"]["room_price"]);
 
+                    $('#curr_grand_total').text('Rp. '+response["grand"]+',-');
+
+                    $('.going_item tbody').append('<tr><td>'+ response["room"]["name"] +'</td><td>Rp. '+ response["transaction"]["room_price"] +',-</td><td>'+response["transaction"]["booking_hour"]+' hours</td><td>Rp. '+(response["transaction"]["room_price"]*response["transaction"]["booking_hour"])+',-</td></tr>');
+
                     $.each(response["transactionDetail"], function(index, value){
                         if(value["item_id"]!=null){
                             $.ajax({
                                 url: $fullpathUrl+'/getItem/'+value["item_id"],
                                 type: 'GET',
                                 success: function(responseItem){
-                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                    $('.going_item tbody').append('<tr><td>'+ responseItem["item"]["name"] +'</td><td>Rp. '+ responseItem["item"]["price"] +',-</td><td>'+ value["quantity"] +' pcs</td><td>Rp. '+responseItem["item"]["price"]*value["quantity"]+',-</td></tr>');
                                 }
                             });
                         } else {
@@ -504,13 +503,16 @@
                                 url: $fullpathUrl+'/getDetailTransaction/'+value["id"],
                                 type: 'GET',
                                 success: function(responseItem){
-                                    $('.going_item tbody').append('<tr><td>'+ (index+1) +'</td><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td></tr>');
+                                    $('.going_item tbody').append('<tr><td>'+ responseItem["transactionDetail"]["other_item_name"] +'</td><td>Rp. '+ responseItem["transactionDetail"]["other_item_price"] +',-</td><td>'+ value["quantity"] +' pcs</td><td>Rp. '+responseItem["transactionDetail"]["other_item_price"]*value["quantity"]+',-</td></tr>');
                                 }
                             });
                         }
                     });
+
+                    
                 } 
             });
+            
             $('.modal-going').show();
         });
 
@@ -543,7 +545,7 @@
             $.each($items,function(index, value){
                 $item = $item + '<option value="'+value.id+'">'+value.name+'</option>';
             });
-            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" min="0" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
+            $('.add-item').append('<div class="item form-group"><div class="col-md-4 col-sm-offset-3"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-2"><input type="number" id="itemQuantity" min="1" value="1" class="form-control col-md-2 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-2"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }} disabled><input type="hidden" name="itemPrice[]" class="itemPrice" id="itemPrice" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-8 col-sm-offset-3"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
         });
 
         $('.btn-edit-item').click(function(e){
@@ -552,7 +554,7 @@
             $.each($items,function(index, value){
                 $item = $item + '<option value="'+value.id+'">'+value.name+'</option>';
             });
-            $('.edit-item').append('<div class="item form-group"><div class="col-md-5"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-3"><input type="number" id="itemQuantity" min="0" class="form-control col-md-3 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-3"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-edit-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-11"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
+            $('.edit-item').append('<div class="item form-group"><div class="col-md-5"><select class="form-control itemName" name="itemName[]">'+$item+'<option value="other">other</option></select></div><div class="col-md-3"><input type="number" id="itemQuantity" min="1" value="1" class="form-control col-md-3 col-xs-12 itemQuantity" name="itemQuantity[]" placeholder="Qty"></div><div class="col-md-3"><input type="number" id="itemPrice" class="form-control col-md-2 col-xs-12 itemPrice" name="itemPrice[]" placeholder="Price" value={{ $items[0]->price }} disabled><input type="hidden" name="itemPrice[]" class="itemPrice" id="itemPrice" value={{ $items[0]->price }}></div><div class="col-sm-1"><button type="button" class="close form-control btn-edit-minus"><i class="fa fa-minus" style="color: red"></i></button></div><div class="add-other"><div class="col-md-11"><input type="text" id="itemOther" class="form-control col-md-12 col-xs-12 itemOther" name="itemOther[]" placeholder="Item Name..." style="display:none" val=""></div></div></div>');
             $('.btn-submit').show();
         });
 
@@ -570,6 +572,8 @@
             if($(this).val() == 'other'){
                 $(this).parent().parent().find('.add-other .itemOther').css("display","block");
                 $(this).parent().parent().find('.itemPrice').val("");
+                $(this).parent().parent().find('.itemPrice').removeAttr('disabled');
+                $(this).parent().parent().find('input[type=hidden]').removeAttr('name');
             }
             else
                 $(this).parent().parent().find('.add-other .itemOther').css("display","none");
