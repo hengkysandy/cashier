@@ -51,6 +51,13 @@
     <meta name="fullpath" content="{{ URL::to('') }}">
 
     @yield('style')
+    <style type="text/css">
+        .modal-body {
+            max-height: calc(110vh - 160px);
+            overflow: auto;
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <body class="nav-md" onload=@yield('load')>
     <div class="container body">
