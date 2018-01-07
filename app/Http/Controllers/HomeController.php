@@ -121,30 +121,35 @@ class HomeController extends Controller
 	}
 
 	public function updateTransaction(Request $request){
-		foreach ($request->itemName as $index => $id) {
-			if ($id == "other") {
-				TransactionDetail::create([
-					'id_transaction' => $request->id,
-					'item_id' => NULL,
-					'item_price' => NULL,
-					'other_item_name' => $request->itemOther[$index],
-					'other_item_price' => $request->itemPrice[$index],
-					'quantity' => $request->itemQuantity[$index]
-				]);
-			} else {
+		$transaction = Transaction::find($request->id);
+		$transaction->booking_hour = $request->hour;
+		$transaction->save();
+		if(!empty($request->itemName)){
+			foreach ($request->itemName as $index => $id) {
+				if ($id == "other") {
+					TransactionDetail::create([
+						'id_transaction' => $request->id,
+						'item_id' => NULL,
+						'item_price' => NULL,
+						'other_item_name' => $request->itemOther[$index],
+						'other_item_price' => $request->itemPrice[$index],
+						'quantity' => $request->itemQuantity[$index]
+					]);
+				} else {
 
-				$item = Item::find($id);
-				$item->stock = $item->stock - $request->itemQuantity[$index];
-				$item->save();
+					$item = Item::find($id);
+					$item->stock = $item->stock - $request->itemQuantity[$index];
+					$item->save();
 
-				TransactionDetail::create([
-					'id_transaction' => $request->id,
-					'item_id' => $id,
-					'item_price' => $request->itemPrice[$index],
-					'other_item_name' => NULL,
-					'other_item_price' => NULL,
-					'quantity' => $request->itemQuantity[$index]
-				]);
+					TransactionDetail::create([
+						'id_transaction' => $request->id,
+						'item_id' => $id,
+						'item_price' => $request->itemPrice[$index],
+						'other_item_name' => NULL,
+						'other_item_price' => NULL,
+						'quantity' => $request->itemQuantity[$index]
+					]);
+				}
 			}
 		}
 

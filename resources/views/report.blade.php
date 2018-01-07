@@ -101,7 +101,7 @@
                                     </thead>
                                     <tfoot>
                                         <tr style="color: green">
-                                            <th colspan="10" style="text-align:right">Grand Total :</th>
+                                            <th colspan="8" style="text-align:right">Grand Total :</th>
                                             <th id="showTotal"></th>
                                         </tr>
                                     </tfoot>
@@ -119,7 +119,7 @@
                                         <td class=" ">{{$data->created_at->format('Y-m-d')}}</td>
                                         <td class=" ">{{$data->created_at->format('H:i')}}</td>
                                         <td class=" ">{{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') >= 24 ? ( $data->created_at->format('H')-24+$data->booking_hour.":".$data->created_at->format('i')) :  $data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') }}</td>
-                                        <td class="grand_total">Rp. {{number_format($data->getTotalPrice()+$data->getTotalPriceOther()+($data->room_price*$data->booking_hour))}}</td> <!--edit-->
+                                        <td class="grand_total">Rp. {{number_format($data->getTotalPrice()+$data->getTotalPriceOther()+($data->room_price*$data->booking_hour))}}</td>
                                         <?php $btnClass = $data->status == "On Going" ? 'text-danger' : 'text-success' ?>
                                         <td class="{{$btnClass}}"><b>{{$data->status}}</b></td>
                                         <td class=" last">
@@ -193,7 +193,7 @@
                                     </tbody>
                                 </table>
                                 <hr>
-                                <p style="text-align: right;font-weight: bold">Grand Total : <span id="curr_grand_total"></span></p>
+                                <p style="text-align: right;font-weight: bold; margin-right: 45px;">Grand Total : <span id="curr_grand_total"></span></p>
                             </div>
                         </div>
                     </div>

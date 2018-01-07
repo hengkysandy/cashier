@@ -26,45 +26,38 @@
         <div class="main_container">
             <div class="col-md-4 col-md-offset-4" style="background-color: white">
                 <div class="col-middle text-center">
-                    <h1>Transaction</h1>
-                    <hr>
                     <div class="col-md-12">
-                        <div class="row">
-                            <label class="col-md-5">No. Transaction</label>
-                            <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->id }}</div>
-                        </div>
+                        <table style="text-align: left; text-indent: 20">
+                            <tr>
+                                <td>No. Transaction</td>
+                                <td>:</td>
+                                <td>&nbsp; &nbsp; {{ $transaction->id }}</td>
+                            </tr>
+                            <tr>
+                                <td>Customer Name</td>
+                                <td>:</td>
+                                <td>&nbsp; &nbsp; {{ $transaction->customer_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Customer Phone</td>
+                                <td>:</td>
+                                <td>&nbsp; &nbsp; {{ $transaction->customer_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td>Booking Date</td>
+                                <td>:</td>
+                                <td>&nbsp; &nbsp; {{ $transaction->created_at->format('j F Y h:i A') }}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="col-md-5">Customer Name</label>
-                            <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->customer_name }}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="col-md-5">Customer Phone</label>
-                            <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->customer_phone }}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="col-md-5">Booking Date</label>
-                            <div class="col-md-2">:</div>
-                            <div class="col-md-5">{{ $transaction->created_at->format('j F Y h:i A') }}</div>
-                        </div>
-                    </div>
-                    <h2>Transaction Detail</h2>
                     <div class="col-md-12">
                         <table class="going_item table table-striped text-justify">
                             <thead>
                                 <tr>
-                                    <th>Item Name</th>
-                                    <th>Item Price</th>
+                                    <th>Item</th>
+                                    <th>Price</th>
                                     <th>Quantity</th>
-                                    <th>Total Price</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,19 +75,15 @@
                                         <td>Rp. {{ $detail->item_id!=""?number_format($detail->Item->price * $detail->quantity,0,'','.'):number_format($detail->other_item_price * $detail->quantity,0,'','.') }},-</td>
                                     </tr>
                                 @endforeach
+                                    <tr>
+                                        <td colspan="4" style="text-align: right;">
+                                            Grand Total : Rp. {{number_format($transaction->getTotalPrice()+$transaction->getTotalPriceOther()+($transaction->room_price*$transaction->booking_hour))}}
+                                        </td>
+                                    </tr>
                             </tbody>
                         </table>
-                        <hr>
                     </div>
-                    <div class="col-md-12">
-                        <p style="font-weight: bold; text-align: right;">Grand Total : Rp. {{number_format($transaction->getTotalPrice()+$transaction->getTotalPriceOther()+($transaction->room_price*$transaction->booking_hour))}}</p>
-                    </div>
-                    <h6>Thanks from CS : {{ $transaction->Employee->name }}</h6>
-                    <h5>Copyright &copy; Cashier - 2017</h5>
                 </div>
-            </div>
-            <div class="col-md-2 col-md-offset-2">
-                <button type="button" class="btn btn-primary fa fa-download" onclick="window.print()"> Print</button>
             </div>
         </div>
     </div>
@@ -113,5 +102,11 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('css/build/js/custom.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            window.print();
+            window.close();
+        });
+    </script>
 </body>
 </html>
