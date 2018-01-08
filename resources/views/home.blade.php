@@ -92,12 +92,12 @@
                                             <th><h5>Booking End</h5></th>
                                             <td>:</td>
                                             <td>
-                                                <h5>
+                                                <h5 class="getBookingEnd">
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
                                                         <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
-                                                        {{ date($room->Transaction->where('status','On Going')->first()->created_at, strtotime('+'.$room->Transaction->where('status','On Going')->first()->booking_hour.' hours')) }}
+                                                        {{ $room->Transaction->where('status','On Going')->first()->created_at->addHours($room->Transaction->where('status','On Going')->first()->booking_hour) }}
                                                     @endif
                                                 </h5>
                                             </td>
@@ -111,7 +111,7 @@
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
                                                         <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
-                                                        {{ $room->Transaction->where('status','On Going')->first()->booking_hour }}
+                                                        {{ $room->Transaction->where('status','On Going')->first()->booking_hour }} Hours
                                                     @endif
                                                 </h5>
                                             </td>
@@ -357,7 +357,7 @@
                                     </table>
                                 </div>
                                 <hr>
-                                <p style="text-align: right;font-weight: bold">Grand Total : <span id="curr_grand_total"></span></p>
+                                <p style="text-align: right;font-weight: bold;margin-right: 83px;">Grand Total : <span id="curr_grand_total"></span></p>
                             </div>
                             <hr>
                             <input type="hidden" name="id" class="going_edit_id">
@@ -435,7 +435,7 @@
                     $('.going_name').val(response["transaction"]["customer_name"]);
                     $('.going_phone').val(response["transaction"]["customer_phone"]);
                     $('.going_date').val(response["transaction"]["created_at"]);
-                    $('.going_end').val(response["transaction"]["created_at"]);
+                    $('.going_end').val(response["transaction"]["booking_end"]);
                     $('.going_hour').val(response["transaction"]["booking_hour"]);
                     $('.going_price').val(response["transaction"]["room_price"]);
 

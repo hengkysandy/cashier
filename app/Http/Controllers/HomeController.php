@@ -158,6 +158,7 @@ class HomeController extends Controller
 
     public function getTransaction($id){
     	$data['transaction'] = Transaction::find($id);
+    	$data['transaction']['booking_end'] = $data['transaction']->created_at->addHours($data['transaction']->booking_hour)->format('Y-m-d H:i:s');
     	$data['grand'] = $data['transaction']->getTotalPrice() + $data['transaction']->getTotalPriceOther() + ($data['transaction']->room_price * $data['transaction']->booking_hour);
     	$data['room'] = $data['transaction']->Room;
     	$data['employee_name'] = $data['transaction']->Employee->name;

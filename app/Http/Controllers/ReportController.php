@@ -18,6 +18,9 @@ class ReportController extends Controller
             $data['years'][] = $currYear;
         }
     	return view('report',$data);
+
+        //kodingan buat ambil end time, agak bar", harus bisa pake carbon addhours aja
+        // {{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') >= 24 ? ( $data->created_at->format('H')-24+$data->booking_hour.":".$data->created_at->format('i')) :  $data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') }}
     }
 
     public function filterReport(Request $request)

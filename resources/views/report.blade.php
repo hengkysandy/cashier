@@ -32,7 +32,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="col-md-5">
-                            Search by : Date and Time
+                            Search by : Booking Date
                             <form method="post" action="{{url('filterReport')}}" class="form-horizontal" id="filter-form">
                                 {{csrf_field()}}
                               <fieldset>
@@ -90,8 +90,7 @@
                                         <th class="column-title">Room </th>
                                         <th class="column-title">Customer Name </th>
                                         <th class="column-title">Booking Date </th>
-                                        <th class="column-title">Start Time </th>
-                                        <th class="column-title">End Time </th>
+                                        <th class="column-title">Booking End </th>
                                         <th class="column-title">Total Price </th>
                                         <th class="column-title">Status </th>
                                         <th class="column-title no-link last">
@@ -116,9 +115,8 @@
                                         <td class=" ">{{$data->id}}</td>
                                         <td class="room_name">{{$data->Room->name}}</td>
                                         <td class="customer_name">{{$data->customer_name}}</td>
-                                        <td class=" ">{{$data->created_at->format('Y-m-d')}}</td>
-                                        <td class=" ">{{$data->created_at->format('H:i')}}</td>
-                                        <td class=" ">{{$data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') >= 24 ? ( $data->created_at->format('H')-24+$data->booking_hour.":".$data->created_at->format('i')) :  $data->created_at->format('H')+$data->booking_hour.":".$data->created_at->format('i') }}</td>
+                                        <td class=" ">{{$data->created_at->format('Y-m-d H:i')}}</td>
+                                        <td class=" ">{{$data->created_at->addHours($data->booking_hour)->format('Y-m-d H:i')}}</td>
                                         <td class="grand_total">Rp. {{number_format($data->getTotalPrice()+$data->getTotalPriceOther()+($data->room_price*$data->booking_hour))}}</td>
                                         <?php $btnClass = $data->status == "On Going" ? 'text-danger' : 'text-success' ?>
                                         <td class="{{$btnClass}}"><b>{{$data->status}}</b></td>
@@ -222,7 +220,7 @@
                     "footerCallback": function ( row, data, start, end, display ) {
                         var api = this.api(), data;
 
-                        refreshTotal(api.column( 11 ).data());
+                        refreshTotal(api.column( 10 ).data());
                     },
                     "columnDefs": [
                             {
@@ -245,12 +243,12 @@
 
             $('#month').on('change', function(){
                 rp.column(0).search(this.value).draw();
-                refreshTotal($('#report_table').DataTable().column( 11, {search:'applied'} ).data());
+                refreshTotal($('#report_table').DataTable().column( 10, {search:'applied'} ).data());
             });
 
             $('#year').on('change', function(){
                 rp.column(1).search(this.value).draw();
-                refreshTotal($('#report_table').DataTable().column( 11, {search:'applied'} ).data());
+                refreshTotal($('#report_table').DataTable().column( 10, {search:'applied'} ).data());
             });
 
             //datetime range picker
