@@ -53,8 +53,9 @@ Route::group(['middleware' => 'checkUser'], function () {
     Route::get('deleteEmployee/{id}', 'EmployeeController@delete');
 
     //Report
-    Route::get('report', 'ReportController@view');
+    Route::get('profit', 'ReportController@view');
     Route::post('filterReport', 'ReportController@filterReport');
+    Route::get('selling', 'ReportController@viewItem');
 
     Route::get('logoutUser', 'EmployeeController@logoutUser');
 });

@@ -14,5 +14,9 @@ class Item extends Model
     	'stock',
     	'status',
     ];
-    
+
+	public function transactiondetail()
+	{
+		return $this->hasMany(TransactionDetail::class, 'item_id', 'id');
+	}
 }

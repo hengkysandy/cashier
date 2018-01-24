@@ -58,6 +58,7 @@ class EmployeeController extends Controller
 
 	public function update(Request $request){
 		$employee = Employee::find($request->id);
+		$employee->role_id = $request->role;
 		$employee->email = $request->email;
 		$employee->name = $request->name;
 		$employee->password = $request->password;

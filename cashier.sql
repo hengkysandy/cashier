@@ -1,33 +1,61 @@
--- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Jan 08, 2018 at 06:37 AM
--- Server version: 10.1.19-MariaDB
--- PHP Version: 7.0.13
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `cashier`
---
-
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               5.5.58-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             9.4.0.5125
 -- --------------------------------------------------------
 
---
--- Table structure for table `employee`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-CREATE TABLE `employee` (
-  `id` int(11) NOT NULL,
+
+-- Dumping database structure for cashier
+CREATE DATABASE IF NOT EXISTS `cashier` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `cashier`;
+
+-- Dumping structure for table cashier.item
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table cashier.item: ~0 rows (approximately)
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+REPLACE INTO `item` (`id`, `name`, `price`, `stock`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'itemtest01', 5000, 50, NULL, '2018-01-09 21:56:50', '2018-01-09 22:08:39', NULL),
+	(2, 'itemtest02', 20000, 5, 'active', '2018-01-09 22:08:32', '2018-01-09 22:08:32', NULL);
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+
+-- Dumping structure for table cashier.role
+CREATE TABLE IF NOT EXISTS `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table cashier.role: ~2 rows (approximately)
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+REPLACE INTO `role` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Manager', '2017-12-01 18:29:26', '0000-00-00 00:00:00', NULL),
+	(2, 'Staff', '2017-12-01 18:29:31', '0000-00-00 00:00:00', NULL);
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+
+-- Dumping structure for table cashier.employee
+CREATE TABLE IF NOT EXISTS `employee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -35,108 +63,44 @@ CREATE TABLE `employee` (
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `emp_to_role` (`role_id`),
+  CONSTRAINT `emp_to_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `employee`
---
+-- Dumping data for table cashier.employee: ~0 rows (approximately)
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+REPLACE INTO `employee` (`id`, `role_id`, `email`, `name`, `password`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'fidelson.tanzil@yahoo.com', 'admin', 'admin', 'active', '2018-01-09 21:56:50', NULL, NULL),
+	(2, 2, 'staff@yahoo.com', 'staff', 'staff', 'active', '2018-01-09 22:08:11', '2018-01-09 22:08:11', NULL);
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 
-INSERT INTO `employee` (`id`, `role_id`, `email`, `name`, `password`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'manager1@gmail.com', 'manager1', '123123', 'active', '2017-12-01 11:30:04', '0000-00-00 00:00:00', NULL),
-(2, 2, 'staff1@gmail.com', 'staff1', '123123', 'active', '2017-12-01 11:30:20', '0000-00-00 00:00:00', NULL),
-(3, 2, 'staff2@gmail.com', 'staff2', '123123', 'active', '2017-12-01 11:30:32', '0000-00-00 00:00:00', NULL),
-(4, 2, 'newStaff@gmail.com', 'newStaff', '123123', 'active', '2017-12-01 19:37:30', '2017-12-01 19:37:30', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item`
---
-
-CREATE TABLE `item` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `price` float DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `item`
---
-
-INSERT INTO `item` (`id`, `name`, `price`, `stock`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'beer', 50000, -1, 'active', '2017-12-01 11:31:36', '2018-01-06 05:42:28', NULL),
-(2, 'botol aqua', 4000, 50, 'active', '2017-12-01 11:31:53', '0000-00-00 00:00:00', NULL),
-(3, 'teh kotak', 5000, 59, 'active', '2017-12-01 11:32:31', '2018-01-06 05:42:59', NULL),
-(4, 'nasi padang', 15000, 12, 'active', '2017-12-01 11:32:54', '2018-01-06 05:42:59', NULL),
-(5, 'item1', 5000, 86, 'active', '2017-12-01 19:42:51', '2018-01-06 05:42:28', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `role`
---
-
-CREATE TABLE `role` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `role`
---
-
-INSERT INTO `role` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Manager', '2017-12-01 11:29:26', '0000-00-00 00:00:00', NULL),
-(2, 'Staff', '2017-12-01 11:29:31', '0000-00-00 00:00:00', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `room`
---
-
-CREATE TABLE `room` (
-  `id` int(11) NOT NULL,
+-- Dumping structure for table cashier.room
+CREATE TABLE IF NOT EXISTS `room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `room`
---
+-- Dumping data for table cashier.room: ~0 rows (approximately)
+/*!40000 ALTER TABLE `room` DISABLE KEYS */;
+REPLACE INTO `room` (`id`, `name`, `price`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Room01', 100000, 'Room', '2018-01-09 22:02:46', '2018-01-09 22:02:46', NULL),
+	(2, 'Hall01', 0, 'Hall', '2018-01-09 22:02:54', '2018-01-09 22:02:54', NULL),
+	(3, 'Hall02', NULL, 'Hall', '2018-01-09 22:06:23', '2018-01-09 22:06:23', NULL),
+	(4, 'Hall03', NULL, 'Hall', '2018-01-09 22:07:03', '2018-01-09 22:07:03', NULL),
+	(5, 'Hall05', NULL, 'Hall', '2018-01-09 22:07:44', '2018-01-09 22:07:44', NULL);
+/*!40000 ALTER TABLE `room` ENABLE KEYS */;
 
-INSERT INTO `room` (`id`, `name`, `price`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Room601', 50000, 'Room', '2017-12-01 11:33:31', '0000-00-00 00:00:00', NULL),
-(2, 'Room602', 60000, 'Room', '2017-12-01 11:33:42', '0000-00-00 00:00:00', NULL),
-(3, 'Room603', 50000, 'Room', '2017-12-01 11:33:51', '0000-00-00 00:00:00', NULL),
-(4, 'Room604', 60000, 'Room', '2017-12-01 11:34:02', '0000-00-00 00:00:00', NULL),
-(5, 'Room605', 70000, 'Room', '2017-12-01 11:34:11', '0000-00-00 00:00:00', NULL),
-(6, 'Hall701', NULL, 'Hall', '2017-12-01 11:34:25', '0000-00-00 00:00:00', NULL),
-(7, 'Hall702', NULL, 'Hall', '2017-12-01 11:34:30', '0000-00-00 00:00:00', NULL),
-(8, 'Hall703', NULL, 'Hall', '2017-12-01 11:34:40', '0000-00-00 00:00:00', NULL),
-(9, 'Hall704', NULL, 'Hall', '2017-12-01 11:34:46', '0000-00-00 00:00:00', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `transaction`
---
-
-CREATE TABLE `transaction` (
-  `id` int(11) NOT NULL,
+-- Dumping structure for table cashier.transaction
+CREATE TABLE IF NOT EXISTS `transaction` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `room_id` int(11) DEFAULT NULL,
   `room_price` float DEFAULT NULL,
   `employee_id` int(11) DEFAULT NULL,
@@ -148,17 +112,21 @@ CREATE TABLE `transaction` (
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tr_to_emp` (`employee_id`),
+  KEY `tr_to_room` (`room_id`),
+  CONSTRAINT `tr_to_emp` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tr_to_room` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+-- Dumping data for table cashier.transaction: ~0 rows (approximately)
+/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 
---
--- Table structure for table `transaction_detail`
---
-
-CREATE TABLE `transaction_detail` (
-  `id` int(11) NOT NULL,
+-- Dumping structure for table cashier.transaction_detail
+CREATE TABLE IF NOT EXISTS `transaction_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_transaction` int(11) DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL,
   `item_price` float DEFAULT NULL,
@@ -167,112 +135,18 @@ CREATE TABLE `transaction_detail` (
   `quantity` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tr_dt_to_item` (`item_id`),
+  KEY `tr_dt_to_tr` (`id_transaction`),
+  CONSTRAINT `tr_dt_to_item` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tr_dt_to_tr` FOREIGN KEY (`id_transaction`) REFERENCES `transaction` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indexes for dumped tables
---
+-- Dumping data for table cashier.transaction_detail: ~0 rows (approximately)
+/*!40000 ALTER TABLE `transaction_detail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaction_detail` ENABLE KEYS */;
 
---
--- Indexes for table `employee`
---
-ALTER TABLE `employee`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `emp_to_role` (`role_id`);
-
---
--- Indexes for table `item`
---
-ALTER TABLE `item`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `room`
---
-ALTER TABLE `room`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `transaction`
---
-ALTER TABLE `transaction`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tr_to_emp` (`employee_id`),
-  ADD KEY `tr_to_room` (`room_id`);
-
---
--- Indexes for table `transaction_detail`
---
-ALTER TABLE `transaction_detail`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tr_dt_to_item` (`item_id`),
-  ADD KEY `tr_dt_to_tr` (`id_transaction`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `employee`
---
-ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `item`
---
-ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `role`
---
-ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `room`
---
-ALTER TABLE `room`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT for table `transaction`
---
-ALTER TABLE `transaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
---
--- AUTO_INCREMENT for table `transaction_detail`
---
-ALTER TABLE `transaction_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `employee`
---
-ALTER TABLE `employee`
-  ADD CONSTRAINT `emp_to_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `transaction`
---
-ALTER TABLE `transaction`
-  ADD CONSTRAINT `tr_to_emp` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `tr_to_room` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `transaction_detail`
---
-ALTER TABLE `transaction_detail`
-  ADD CONSTRAINT `tr_dt_to_item` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `tr_dt_to_tr` FOREIGN KEY (`id_transaction`) REFERENCES `transaction` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

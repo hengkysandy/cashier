@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title"><i class="fa fa-money"></i> <span>Cashier</span></a>
+            <a href="{{url('home')}}" class="site_title"><i class="fa fa-money"></i> <span>Cashier</span></a>
         </div>
 
         <div class="clearfix"></div>
@@ -25,8 +25,11 @@
                     <li>
                         <a href="{{url('home')}}"><i class="fa fa-home"></i>Home</a>
                     </li>
-                    <li>
-                        <a href="{{url('report')}}"><i class="fa fa-calendar"></i>Report</a>
+                    <li><a><i class="fa fa-calendar"></i>Report <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{url('profit')}}">Profit</a></li>
+                            <li><a href="{{url('selling')}}">Selling</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a href="{{url('item')}}"><i class="fa fa-archive"></i>Item</a>

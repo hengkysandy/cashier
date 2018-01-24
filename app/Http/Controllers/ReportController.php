@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use App\Transaction;
 use App\TransactionDetail;
 use Carbon\Carbon;
@@ -13,10 +14,13 @@ class ReportController extends Controller
     {
     	$data['transaction'] = Transaction::latest('created_at')->orderBy('status','desc');
 
-    	$data['transaction'] = $data['transaction']->get();
-        for ($currYear= Carbon::now()->year; $currYear >=  Transaction::all()->first()->created_at->year; $currYear--) { //edit
-            $data['years'][] = $currYear;
+        if(count($data['transaction']->get()) > 0){
+            $data['transaction'] = $data['transaction']->get();
+            for ($currYear= Carbon::now()->year; $currYear >=  Transaction::all()->first()->created_at->year; $currYear--) { //edit
+                $data['years'][] = $currYear;
+            }
         }
+    	
     	return view('report',$data);
 
         //kodingan buat ambil end time, agak bar", harus bisa pake carbon addhours aja
@@ -42,4 +46,10 @@ class ReportController extends Controller
         return view('report',$data);
     }
 
+    public function viewItem()
+    {
+        $data['items'] = Item::all();
+
+        return view('reportItem', $data);
+    }
 }

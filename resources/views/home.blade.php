@@ -189,6 +189,20 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <th><h5>Booking End</h5></th>
+                                            <td>:</td>
+                                            <td>
+                                                <h5 class="getBookingEnd">
+                                                    @if( empty($room->Transaction->where('status','On Going')->first()) )
+                                                        -
+                                                    @elseif( $room->Transaction->where('status','On Going')->first() )
+                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        {{ $room->Transaction->where('status','On Going')->first()->created_at->addHours($room->Transaction->where('status','On Going')->first()->booking_hour) }}
+                                                    @endif
+                                                </h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th><h5>Booking Hour</h5></th>
                                             <td>:</td>
                                             <td>

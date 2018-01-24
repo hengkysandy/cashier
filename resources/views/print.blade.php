@@ -26,6 +26,11 @@
         <div class="main_container">
             <div class="col-md-4 col-md-offset-4" style="background-color: white">
                 <div class="col-middle text-center">
+
+                    <h3>NAMA TOKO</h3>
+                    <h6>ALAMAT TOKO</h6>
+                    <h6>NOMOR TELP TOKO</h6>
+
                     <div class="col-md-12">
                         <table style="text-align: left; text-indent: 20">
                             <tr>
@@ -82,6 +87,9 @@
                                     </tr>
                             </tbody>
                         </table>
+
+                        <h5>Thank You!</h5>
+
                     </div>
                 </div>
             </div>

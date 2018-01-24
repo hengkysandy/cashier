@@ -71,9 +71,11 @@
                             Search by : Year
                             <select class="form-control" id="year">
                                 <option value=""> -------- Select Year -------- </option>
+                                @if(!empty($years))
                                 @foreach($years as $year)
                                     <option value="{{$year}}">{{$year}}</option>
                                 @endforeach
+                                @endif
                             </select>
                           </div>
                         <div class="x_content">
