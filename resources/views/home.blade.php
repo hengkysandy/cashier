@@ -11,7 +11,7 @@
     <div class="right_col" role="main">
         <div class="page-title">
             <div class="title_left">
-                <h3>Home <small>Show Room and Hall</small></h3>
+                <h3>Home <small>Show Room and Hall22</small></h3>
             </div>
         </div>
 
@@ -75,7 +75,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><h5>Booking Date</h5></th>
+                                            <th><h5>Booking Date22</h5></th>
                                             <td>:</td>
                                             <td>
                                                 <h5>
