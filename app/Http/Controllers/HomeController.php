@@ -25,7 +25,7 @@ class HomeController extends Controller
 			$data['rooms'] = Room::all();
 			$data['items'] = Item::all();
 			$data['time'] = Carbon::now();
-			return view('Home', $data);
+			return view('home', $data);
 		} else {
 			return redirect('/');
 		}
