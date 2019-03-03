@@ -14,7 +14,7 @@
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/', function () {
         if(empty(session()->get('userSession')->id))
-            return view('login');
+            return \View::make('login');
         else
             return redirect('/home');
     });
