@@ -23,28 +23,34 @@ class Transaction extends Model
 
     public function Room()
     {
-        return $this->belongsTo(Room::class,'room_id','id');
+        return $this->belongsTo(Room::class, 'room_id', 'id');
     }
 
     public function Employee()
     {
-        return $this->belongsTo(Employee::class,'employee_id','id');
+        return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
     public function TransactionDetail()
     {
-        return $this->hasMany(TransactionDetail::class,'id_transaction','id');
+        return $this->hasMany(TransactionDetail::class, 'id_transaction', 'id');
     }
 
-    public function getTotalPrice() {
-      return $this->TransactionDetail->sum(function($td) {
-        return $td->quantity * $td->item_price;
-      });
+    public function getTotalPrice()
+    {
+        return $this->TransactionDetail->sum(
+            function ($td) {
+                return $td->quantity * $td->item_price;
+            }
+        );
     }
 
-    public function getTotalPriceOther() {
-      return $this->TransactionDetail->sum(function($td) {
-        return $td->quantity * $td->other_item_price;
-      });
+    public function getTotalPriceOther()
+    {
+        return $this->TransactionDetail->sum(
+            function ($td) {
+                return $td->quantity * $td->other_item_price;
+            }
+        );
     }
 }

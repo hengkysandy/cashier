@@ -9,13 +9,15 @@ class CheckUser
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if($request->session()->get('userSession') === null) return back();
+        if ($request->session()->get('userSession') === null) {
+            return back();
+        }
         return $next($request);
     }
 }

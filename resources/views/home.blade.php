@@ -31,7 +31,9 @@
             <div class="row tab-content" id="myTabContent">
                 @foreach($rooms as $key => $room)
                     @if($room->type == 'Room')
-                        <?php $flag = 0; $id = 0; $status = ""; ?>
+                        <?php $flag = 0;
+                        $id = 0;
+                        $status = ""; ?>
                         <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade active in tab_content1" role="tabpanel" aria-labelledby="room-tab">
                             <div class="x_panel tile fixed_height_285">
                                 <div class="x_title" style="margin-bottom: 0px;">
@@ -46,7 +48,8 @@
                                                     <input type="submit" value="Book" class="btn btn-success" disabled="">
                                                 </form>
                                             @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                 <form class="form-going">
                                                     <input type="hidden" class="going_id" value="{{ $room->Transaction->where('status','On Going')->first()->id }}">
                                                     <input type="hidden" class="going_type" value="{{ $room->type }}">
@@ -68,7 +71,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->customer_name }}
                                                     @endif
                                                 </h5>
@@ -82,7 +86,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->created_at }}
                                                     @endif
                                                 </h5>
@@ -96,7 +101,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->created_at->addHours($room->Transaction->where('status','On Going')->first()->booking_hour) }}
                                                     @endif
                                                 </h5>
@@ -110,7 +116,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->booking_hour }} Hours
                                                     @endif
                                                 </h5>
@@ -131,7 +138,9 @@
                             </div>
                         </div>
                     @else
-                        <?php $flag = 0; $id = 0; $status = ""; ?>
+                        <?php $flag = 0;
+                        $id = 0;
+                        $status = ""; ?>
                         <div class="col-md-4 col-sm-4 col-xs-12 tab-pane fade tab_content2" role="tabpanel" aria-labelledby="hall-tab">
                             <div class="x_panel tile fixed_height_285">
                                 <div class="x_title" style="margin-bottom: 0px;">
@@ -146,7 +155,8 @@
                                                     <input type="submit" value="Book" class="btn btn-success" disabled="">
                                                 </form>
                                             @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                 <form class="form-going">
                                                     <input type="hidden" class="going_id" value="{{ $room->Transaction->where('status','On Going')->first()->id }}">
                                                     <input type="hidden" class="going_type" value="{{ $room->type }}">
@@ -168,7 +178,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->customer_name }}
                                                     @endif
                                                 </h5>
@@ -182,7 +193,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->created_at }}
                                                     @endif
                                                 </h5>
@@ -196,7 +208,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->created_at->addHours($room->Transaction->where('status','On Going')->first()->booking_hour) }}
                                                     @endif
                                                 </h5>
@@ -210,7 +223,8 @@
                                                     @if( empty($room->Transaction->where('status','On Going')->first()) )
                                                         -
                                                     @elseif( $room->Transaction->where('status','On Going')->first() )
-                                                        <?php $id = $room->Transaction->where('status','On Going')->first()->id; $status = $room->Transaction->where('status','On Going')->first()->status; ?>
+                                                        <?php $id = $room->Transaction->where('status', 'On Going')->first()->id;
+                                                        $status = $room->Transaction->where('status', 'On Going')->first()->status; ?>
                                                         {{ $room->Transaction->where('status','On Going')->first()->booking_hour }}
                                                     @endif
                                                 </h5>

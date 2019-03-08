@@ -9,12 +9,13 @@ class Room extends Model
     protected $table = 'room';
 
     protected $fillable = [
-    	'name',
-    	'price',
-    	'type',
+        'name',
+        'price',
+        'type',
     ];
 
-    public function Transaction(){
-    	return $this->hasMany(Transaction::class,'room_id','id');
+    public function Transaction()
+    {
+        return $this->hasMany(Transaction::class, 'room_id', 'id');
     }
 }

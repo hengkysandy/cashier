@@ -7,38 +7,43 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-	public function view(){
-		$items = Item::all();
+    public function view()
+    {
+        $items = Item::all();
 
-		return view('item',compact('items'));
-	}
+        return view('item', compact('items'));
+    }
 
     public function create(Request $request)
     {
-    	Item::create([
-    		'name' => $request->name,
-    		'price' => $request->price,
-    		'stock' => $request->stock,
-    		'status' => 'active',
-    	]);
+        Item::create(
+            [
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'status' => 'active',
+            ]
+        );
 
-    	return back();
+        return back();
     }
 
-	public function update(Request $request){
-		$item = Item::find($request->id);
-		$item->name = $request->name;
-		$item->price = $request->price;
-		$item->stock = $request->stock;
-		$item->save();
+    public function update(Request $request)
+    {
+        $item = Item::find($request->id);
+        $item->name = $request->name;
+        $item->price = $request->price;
+        $item->stock = $request->stock;
+        $item->save();
 
-		return back();
-	}
+        return back();
+    }
 
-	public function delete($id){
-		$item = Item::find($id);
-		$item->delete();
+    public function delete($id)
+    {
+        $item = Item::find($id);
+        $item->delete();
 
-		return back();
-	}
+        return back();
+    }
 }
