@@ -10,7 +10,7 @@ RUN composer --version
 
 RUN composer global require hirak/prestissimo
 RUN composer install
-
+RUN grunt
 
 EXPOSE 80
 
