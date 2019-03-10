@@ -10,7 +10,20 @@ RUN composer --version
 
 RUN composer global require hirak/prestissimo
 RUN composer install
-RUN npm install
+
+RUN set -ex \
+    && apk update \
+    && apk add \
+    && apk add --update nodejs \
+    && apk add nodejs-npm
+
+RUN node -v \
+    && npm -v
+
+RUN npm install -g grunt-cli \
+    && npm install grunt --save-dev \
+    && npm install grunt-contrib-concat --save-dev
+
 RUN grunt
 
 EXPOSE 80
