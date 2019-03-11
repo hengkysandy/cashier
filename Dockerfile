@@ -28,6 +28,10 @@ RUN npm install -g grunt-cli \
 
 RUN grunt
 
+CMD php artisan config:clear
+CMD php artisan config:cache
+CMD php artisan key:generate
+
 EXPOSE 80
 
 CMD php artisan serve --port=80 --host=0.0.0.0
