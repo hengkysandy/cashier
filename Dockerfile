@@ -28,9 +28,11 @@ RUN npm install -g grunt-cli \
 
 RUN grunt
 
+CMD php artisan optimize
+CMD php artisan cache:clear
 CMD php artisan config:clear
-CMD php artisan config:cache
-CMD php artisan key:generate
+CMD php artisan route:clear
+CMD php artisan view:clear
 
 EXPOSE 80
 

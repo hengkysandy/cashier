@@ -34,7 +34,8 @@
             <div class="animate form login_form">
                 <section class="login_content">
                     <form action="{{url('doLogin')}}" method="POST" role="login">
-                        {{ csrf_field() }}
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                         <h1>Login Form A</h1>
                         <div>
                             <input type="text" name="name" class="form-control" placeholder="Username" required="" />
