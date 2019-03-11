@@ -35,7 +35,7 @@
                 <section class="login_content">
                     <form action="{{url('doLogin')}}" method="POST" role="login">
                         {!! csrf_field() !!}
-                        <h1>Login Form abcd</h1>
+                        <h1>Login Form abcde</h1>
                         <div>
                             <input type="text" name="name" class="form-control" placeholder="Username" required="" />
                         </div>

@@ -4,6 +4,8 @@ ADD . /my_app
 
 WORKDIR /my_app
 
+RUN docker-php-ext-install mysqli
+
 RUN chmod +x composer-install.sh
 RUN ./composer-install.sh
 RUN composer --version
