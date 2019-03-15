@@ -36,7 +36,7 @@
                     <form action="{{url('doLogin')}}" method="POST" role="login">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <h1>Login Form B</h1>
+                        <h1>Login Form ABC</h1>
                         <div>
                             <input type="text" name="name" class="form-control" placeholder="Username" required="" />
                         </div>
